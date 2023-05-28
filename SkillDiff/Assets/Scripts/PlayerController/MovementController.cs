@@ -28,6 +28,7 @@ public class MovementController : MonoBehaviour
     [Header("Jumping")]
     [SerializeField] bool canJump;
     [SerializeField] bool canDoubleJump;
+    [SerializeField] bool jumped;
     [SerializeField] float jumpCooldown;
 
 
@@ -51,6 +52,7 @@ public class MovementController : MonoBehaviour
     {
         GroundCheck();
         Jumping();
+        DoubleJumping();
     }
 
 
@@ -77,8 +79,23 @@ public class MovementController : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
             canJump = false;
+            jumped = true;
             StartCoroutine(JumpCooldown());
         }
+       
+    }
+    private void DoubleJumping()
+    {
+        if(!canDoubleJump || isGrounded)
+        return;
+
+        
+            if(controlls.Player.DoubleJump.WasPressedThisFrame())
+            {
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
+            canDoubleJump = false;
+            }
         
     }
     IEnumerator JumpCooldown()
@@ -90,6 +107,11 @@ public class MovementController : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
         rb.drag = isGrounded == true? groundedDrag : airDrag;
+        if(!canDoubleJump && isGrounded)
+        canDoubleJump = true;
+        if(jumped && isGrounded)
+        jumped = false;
+
     }
     void OnDrawGizmos()
     {
@@ -97,16 +119,7 @@ public class MovementController : MonoBehaviour
         Gizmos.DrawSphere(transform.position - groundCheckPosition, groundCheckRadious);
     }
 
-    private void SpeedConstrain()
-    {
-        Vector3 playerVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        if (playerVelocity.magnitude > runSpeed)
-        {
-            Vector3 newPlayerVelocity = playerVelocity.normalized * runSpeed;
-            rb.velocity = new Vector3(newPlayerVelocity.x, rb.velocity.y, newPlayerVelocity.z);
-        }
-    }
+   
 
 
 
