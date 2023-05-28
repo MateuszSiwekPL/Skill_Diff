@@ -13,7 +13,8 @@ public class MovementController : MonoBehaviour
     [Header("Move Values")]
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
-    [SerializeField] float speed;
+    [SerializeField] float Speed;
+    [SerializeField] float maxVelocity;
 
     [Header("GroundCheck")]
     [SerializeField] bool isGrounded;
@@ -53,6 +54,8 @@ public class MovementController : MonoBehaviour
         GroundCheck();
         Jumping();
         DoubleJumping();
+        SpeedConstrain();
+        Speed = rb.velocity.magnitude;
     }
 
 
@@ -60,11 +63,7 @@ public class MovementController : MonoBehaviour
     {
         Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
-
-        if (isGrounded)
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
-        else
-        rb.AddForce(runDirection.normalized * runSpeed, ForceMode.Force);
     }
 
     private void Jumping()
@@ -113,16 +112,20 @@ public class MovementController : MonoBehaviour
         jumped = false;
 
     }
+    private void SpeedConstrain()
+    {
+        Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        if (playerSpeed.magnitude > maxVelocity)
+        {
+            Vector3 newSpeed = playerSpeed.normalized * maxVelocity;
+            rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
+        }
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(transform.position - groundCheckPosition, groundCheckRadious);
     }
-
-   
-
-
-
 
    private void OnEnable() => controlls.Enable();
 

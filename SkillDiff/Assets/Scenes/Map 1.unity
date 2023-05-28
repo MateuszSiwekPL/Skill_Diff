@@ -2201,7 +2201,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 32
   jumpForce: 2.8
-  speed: 0
+  Speed: 0
+  maxVelocity: 10
   isGrounded: 0
   whatIsGround:
     serializedVersion: 2
