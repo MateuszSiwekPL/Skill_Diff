@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraLook : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class CameraLook : MonoBehaviour
 
 
 
-   private void OnEnable() {controlls.Enable();}
+   private void OnEnable() => controlls.Enable();
 
-   private void OnDisable() {controlls.Disable();}
+   private void OnDisable() => controlls.Disable();
 }

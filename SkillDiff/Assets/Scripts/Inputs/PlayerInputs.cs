@@ -38,8 +38,26 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Running"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""be684dd0-4a0f-452d-8c19-eaab9ab0a5a4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jumping"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""108603d1-bd21-4e7e-928a-e913f36ab1fa"",
+                    ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DoubleJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""44351bef-7183-45db-86e5-7d12c3a348ba"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -59,46 +77,79 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""4f64e74f-d2ce-4251-90d9-bdb8cccb2477"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""edcb1e87-810c-4d6a-acd5-b1c925789e01"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Running"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a133af40-2415-4fce-8e75-4e85fad66f0f"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Running"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""605fbb5b-8d2d-4cd3-b578-093a99364109"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Running"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7d99ec6f-23d6-4dde-9b62-092d0f66fab9"",
+                    ""name"": ""down"",
+                    ""id"": ""859f7d1c-f3c8-4f07-9ebc-717d299da74a"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Running"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""725f41f8-439b-440a-b9b8-38193f8629f1"",
+                    ""name"": ""left"",
+                    ""id"": ""88c40d36-d1a2-4f35-bdf2-d09a144a3269"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""cc52dd89-76ce-4c43-aa6c-25c903e46d1c"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ea1f32e-7cea-4e55-86a6-57a0b68f929a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jumping"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca9a4efd-2b84-4946-979e-025824037e98"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -111,6 +162,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Running = m_Player.FindAction("Running", throwIfNotFound: true);
+        m_Player_Jumping = m_Player.FindAction("Jumping", throwIfNotFound: true);
+        m_Player_DoubleJump = m_Player.FindAction("DoubleJump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -172,12 +225,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Running;
+    private readonly InputAction m_Player_Jumping;
+    private readonly InputAction m_Player_DoubleJump;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
         public PlayerActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Running => m_Wrapper.m_Player_Running;
+        public InputAction @Jumping => m_Wrapper.m_Player_Jumping;
+        public InputAction @DoubleJump => m_Wrapper.m_Player_DoubleJump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -193,6 +250,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Running.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunning;
                 @Running.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunning;
                 @Running.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunning;
+                @Jumping.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumping;
+                @Jumping.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumping;
+                @Jumping.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumping;
+                @DoubleJump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
+                @DoubleJump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
+                @DoubleJump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -203,6 +266,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Running.started += instance.OnRunning;
                 @Running.performed += instance.OnRunning;
                 @Running.canceled += instance.OnRunning;
+                @Jumping.started += instance.OnJumping;
+                @Jumping.performed += instance.OnJumping;
+                @Jumping.canceled += instance.OnJumping;
+                @DoubleJump.started += instance.OnDoubleJump;
+                @DoubleJump.performed += instance.OnDoubleJump;
+                @DoubleJump.canceled += instance.OnDoubleJump;
             }
         }
     }
@@ -211,5 +280,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     {
         void OnLook(InputAction.CallbackContext context);
         void OnRunning(InputAction.CallbackContext context);
+        void OnJumping(InputAction.CallbackContext context);
+        void OnDoubleJump(InputAction.CallbackContext context);
     }
 }
