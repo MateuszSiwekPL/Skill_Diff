@@ -13,7 +13,7 @@ public class MovementController : MonoBehaviour
     [Header("Move Values")]
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
-    [SerializeField] float Speed;
+    [SerializeField] float speed;
     [SerializeField] float maxVelocity;
 
     [Header("GroundCheck")]
@@ -32,10 +32,18 @@ public class MovementController : MonoBehaviour
     [SerializeField] bool jumped;
     [SerializeField] float jumpCooldown;
 
+    [Header("StateChecking")]
+    public bool dashing;
+    public bool wallRunning;
+    [SerializeField] State state;
 
-
-
-
+    enum State
+    {
+        running,
+        dashing
+    }
+    
+   
 
     private void Awake() 
     {
@@ -46,32 +54,46 @@ public class MovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         Running();
     }
 
     private void Update() 
     {
+        StateHandler();
         GroundCheck();
         Jumping();
         DoubleJumping();
         SpeedConstrain();
-        Speed = rb.velocity.magnitude;
     }
 
+    private void StateHandler()
+    {
+        if(dashing)
+        {
+            state = State.dashing;
+            maxVelocity = 20f;
+        }
+
+        else
+        {
+            state = State.running;
+            maxVelocity = 10f;
+        }
+    }
 
     private void Running()
     {
         Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
+        speed = rb.velocity.magnitude;
     }
 
     private void Jumping()
     {
         if(isGrounded == false)
         return;
-
-        
 
         if (controlls.Player.Jumping.ReadValue<float>() > 0 && canJump)
         {
@@ -105,9 +127,12 @@ public class MovementController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
+
         rb.drag = isGrounded == true? groundedDrag : airDrag;
+
         if(!canDoubleJump && isGrounded)
         canDoubleJump = true;
+
         if(jumped && isGrounded)
         jumped = false;
 

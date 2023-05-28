@@ -62,6 +62,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightDashing"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e73d6a3-3c48-4f29-9035-8d21788950c2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftDashing"",
+                    ""type"": ""Button"",
+                    ""id"": ""254d6810-dfbe-4b8f-9198-79c52b8eb491"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +170,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""DoubleJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e64b24d4-ba5e-46d6-8c88-0919351c9641"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightDashing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f2c5127-dee2-4e08-83c1-adcfd2ade056"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftDashing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +204,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_Running = m_Player.FindAction("Running", throwIfNotFound: true);
         m_Player_Jumping = m_Player.FindAction("Jumping", throwIfNotFound: true);
         m_Player_DoubleJump = m_Player.FindAction("DoubleJump", throwIfNotFound: true);
+        m_Player_RightDashing = m_Player.FindAction("RightDashing", throwIfNotFound: true);
+        m_Player_LeftDashing = m_Player.FindAction("LeftDashing", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,6 +269,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Running;
     private readonly InputAction m_Player_Jumping;
     private readonly InputAction m_Player_DoubleJump;
+    private readonly InputAction m_Player_RightDashing;
+    private readonly InputAction m_Player_LeftDashing;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -235,6 +279,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Running => m_Wrapper.m_Player_Running;
         public InputAction @Jumping => m_Wrapper.m_Player_Jumping;
         public InputAction @DoubleJump => m_Wrapper.m_Player_DoubleJump;
+        public InputAction @RightDashing => m_Wrapper.m_Player_RightDashing;
+        public InputAction @LeftDashing => m_Wrapper.m_Player_LeftDashing;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -256,6 +302,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DoubleJump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
                 @DoubleJump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
                 @DoubleJump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDoubleJump;
+                @RightDashing.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightDashing;
+                @RightDashing.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightDashing;
+                @RightDashing.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightDashing;
+                @LeftDashing.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
+                @LeftDashing.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
+                @LeftDashing.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -272,6 +324,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DoubleJump.started += instance.OnDoubleJump;
                 @DoubleJump.performed += instance.OnDoubleJump;
                 @DoubleJump.canceled += instance.OnDoubleJump;
+                @RightDashing.started += instance.OnRightDashing;
+                @RightDashing.performed += instance.OnRightDashing;
+                @RightDashing.canceled += instance.OnRightDashing;
+                @LeftDashing.started += instance.OnLeftDashing;
+                @LeftDashing.performed += instance.OnLeftDashing;
+                @LeftDashing.canceled += instance.OnLeftDashing;
             }
         }
     }
@@ -282,5 +340,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnRunning(InputAction.CallbackContext context);
         void OnJumping(InputAction.CallbackContext context);
         void OnDoubleJump(InputAction.CallbackContext context);
+        void OnRightDashing(InputAction.CallbackContext context);
+        void OnLeftDashing(InputAction.CallbackContext context);
     }
 }

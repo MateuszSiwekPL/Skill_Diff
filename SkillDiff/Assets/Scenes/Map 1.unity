@@ -1834,7 +1834,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24288
+  m_Name: pb_Mesh24290
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2101,6 +2101,7 @@ GameObject:
   - component: {fileID: 1685867123}
   - component: {fileID: 1685867117}
   - component: {fileID: 1685867122}
+  - component: {fileID: 1685867124}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2201,7 +2202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 32
   jumpForce: 2.8
-  Speed: 0
+  speed: 0
   maxVelocity: 10
   isGrounded: 0
   whatIsGround:
@@ -2215,6 +2216,9 @@ MonoBehaviour:
   canDoubleJump: 1
   jumped: 0
   jumpCooldown: 0.1
+  dashing: 0
+  wallRunning: 0
+  state: 0
 --- !u!54 &1685867123
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2231,6 +2235,23 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1685867124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685867116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bfb9c3563c10441ace58480a733311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementController: {fileID: 1685867122}
+  dashForce: 20
+  dashDuration: 0.2
+  dashCooldown: 2
+  waitForDash: 0
 --- !u!1 &2113046398
 GameObject:
   m_ObjectHideFlags: 0
