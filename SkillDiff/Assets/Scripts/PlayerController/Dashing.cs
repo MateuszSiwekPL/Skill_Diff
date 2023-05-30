@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dashing : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] MovementController movementController;
+    MovementController movementController;
     Rigidbody rb;
     PlayerInputs controlls;
 
@@ -19,6 +19,7 @@ public class Dashing : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody>();
         controlls = new PlayerInputs();
+        movementController = gameObject.GetComponent<MovementController>();
     }
 
     private void Update() 

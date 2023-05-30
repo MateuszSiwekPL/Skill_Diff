@@ -297,7 +297,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1834,7 +1834,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24290
+  m_Name: pb_Mesh24292
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2102,6 +2102,7 @@ GameObject:
   - component: {fileID: 1685867117}
   - component: {fileID: 1685867122}
   - component: {fileID: 1685867124}
+  - component: {fileID: 1685867125}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2201,7 +2202,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 32
-  jumpForce: 2.8
   speed: 0
   maxVelocity: 10
   isGrounded: 0
@@ -2212,10 +2212,6 @@ MonoBehaviour:
   groundCheckPosition: {x: 0, y: 0.62, z: 0}
   groundedDrag: 5
   airDrag: 0
-  canJump: 1
-  canDoubleJump: 1
-  jumped: 0
-  jumpCooldown: 0.1
   dashing: 0
   wallRunning: 0
   state: 0
@@ -2247,11 +2243,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07bfb9c3563c10441ace58480a733311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementController: {fileID: 1685867122}
   dashForce: 20
   dashDuration: 0.2
   dashCooldown: 2
   waitForDash: 0
+--- !u!114 &1685867125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685867116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e98381f054048a4f9c21478b795281e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canJump: 1
+  canDoubleJump: 0
+  jumpCooldown: 0.2
+  jumpForce: 2.8
+  jumped: 0
 --- !u!1 &2113046398
 GameObject:
   m_ObjectHideFlags: 0

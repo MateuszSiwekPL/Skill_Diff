@@ -12,12 +12,11 @@ public class MovementController : MonoBehaviour
 
     [Header("Move Values")]
     [SerializeField] float runSpeed;
-    [SerializeField] float jumpForce;
     [SerializeField] float speed;
     [SerializeField] float maxVelocity;
 
     [Header("GroundCheck")]
-    [SerializeField] bool isGrounded;
+    public bool isGrounded;
     [SerializeField] LayerMask whatIsGround;
     [SerializeField] float groundCheckRadious;
     [SerializeField] Vector3 groundCheckPosition;
@@ -25,12 +24,6 @@ public class MovementController : MonoBehaviour
     [Header("Drag Values")]
     [SerializeField] float groundedDrag;
     [SerializeField] float airDrag;
-
-    [Header("Jumping")]
-    [SerializeField] bool canJump;
-    [SerializeField] bool canDoubleJump;
-    [SerializeField] bool jumped;
-    [SerializeField] float jumpCooldown;
 
     [Header("StateChecking")]
     public bool dashing;
@@ -62,8 +55,6 @@ public class MovementController : MonoBehaviour
     {
         StateHandler();
         GroundCheck();
-        Jumping();
-        DoubleJumping();
         SpeedConstrain();
     }
 
@@ -89,52 +80,12 @@ public class MovementController : MonoBehaviour
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
     }
-
-    private void Jumping()
-    {
-        if(isGrounded == false)
-        return;
-
-        if (controlls.Player.Jumping.ReadValue<float>() > 0 && canJump)
-        {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
-            canJump = false;
-            jumped = true;
-            StartCoroutine(JumpCooldown());
-        }
-       
-    }
-    private void DoubleJumping()
-    {
-        if(!canDoubleJump || isGrounded)
-        return;
-
-        
-            if(controlls.Player.DoubleJump.WasPressedThisFrame())
-            {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
-            canDoubleJump = false;
-            }
-        
-    }
-    IEnumerator JumpCooldown()
-    {
-        yield return new WaitForSeconds(jumpCooldown);
-        canJump = true;
-    }
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
 
         rb.drag = isGrounded == true? groundedDrag : airDrag;
 
-        if(!canDoubleJump && isGrounded)
-        canDoubleJump = true;
-
-        if(jumped && isGrounded)
-        jumped = false;
 
     }
     private void SpeedConstrain()
