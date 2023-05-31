@@ -27,13 +27,14 @@ public class MovementController : MonoBehaviour
 
     [Header("StateChecking")]
     public bool dashing;
-    public bool wallRunning;
+    public bool isWallRunning;
     [SerializeField] State state;
 
     enum State
     {
         running,
-        dashing
+        dashing,
+        wallRunning
     }
     
    
@@ -47,7 +48,7 @@ public class MovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (state != State.wallRunning)
         Running();
     }
 
@@ -64,6 +65,12 @@ public class MovementController : MonoBehaviour
         {
             state = State.dashing;
             maxVelocity = 20f;
+        }
+
+        else if(isWallRunning)
+        {
+            state = State.wallRunning;
+            maxVelocity = 10f;
         }
 
         else

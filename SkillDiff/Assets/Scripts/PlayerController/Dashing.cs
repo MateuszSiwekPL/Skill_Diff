@@ -11,9 +11,9 @@ public class Dashing : MonoBehaviour
 
     [Header("DashValues")]
     [SerializeField] float dashForce;
-    [SerializeField] float dashDuration;
     [SerializeField] float dashCooldown;
-    [SerializeField] float waitForDash;
+    [SerializeField] bool canDash;
+    [SerializeField] float dashDuration;
 
     private void Awake() 
     {
@@ -24,45 +24,54 @@ public class Dashing : MonoBehaviour
 
     private void Update() 
     {
-        StartCoroutine(Dash());
+        Dash();
     }
-    IEnumerator Dash()
+    private void Dash()
     {
+        if(!canDash)
+        return;
+
         if (controlls.Player.RightDashing.WasPressedThisFrame())
         {
-            movementController.dashing = true;
-            StartCoroutine(StopDash());
-            while (movementController.dashing)
-            {
-            yield return null;
-            rb.AddForce(transform.right * dashForce * 10, ForceMode.Force);
-            }
-            
-
+            StartCoroutine(AddingForce(transform.right));
         }
 
         if (controlls.Player.LeftDashing.WasPressedThisFrame())
         {
-            movementController.dashing = true;
-            StartCoroutine(StopDash());
-            while (movementController.dashing)
-            {
-            yield return null;
-            rb.AddForce(-transform.right * dashForce * 10, ForceMode.Force);
-            }
+            StartCoroutine(AddingForce(-transform.right));
         }
 
     }
 
-    IEnumerator StopDash()
+
+    IEnumerator AddingForce(Vector3 direction)
     {
-        yield return new WaitForSeconds(dashDuration); 
+        movementController.dashing = true;
+        canDash = false;
+        StartCoroutine(DashDuration());
+        StartCoroutine(DashCooldown());
+
+        while(movementController.dashing)
+        {
+            yield return new WaitForFixedUpdate();
+            rb.AddForce(direction * dashForce * 10f, ForceMode.Force);
+        }
+        
+    }
+
+    IEnumerator DashCooldown()
+    {
+        yield return new WaitForSeconds(dashCooldown); 
+        canDash = true;
+        
+    }
+    IEnumerator DashDuration()
+    {
+        yield return new WaitForSeconds(dashDuration);
         movementController.dashing = false;
     }
 
-
     private void OnEnable() => controlls.Enable();
-
     private void OnDisable() => controlls.Disable();
 
 }

@@ -34,7 +34,7 @@ public class Jumping : MonoBehaviour
         if (!canJump)
         return;
 
-        if (controlls.Player.Jumping.ReadValue<float>() > 0 && movementController.isGrounded)
+        if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded || movementController.isWallRunning))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
