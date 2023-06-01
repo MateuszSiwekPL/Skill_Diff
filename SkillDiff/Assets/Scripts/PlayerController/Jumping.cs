@@ -12,7 +12,7 @@ public class Jumping : MonoBehaviour
 
     [Header("Jump Values")]
     [SerializeField] bool canJump;
-    [SerializeField] bool canDoubleJump;
+    public bool canDoubleJump;
     [SerializeField] float jumpCooldown;
     [SerializeField] float jumpForce;
     [SerializeField] bool jumped;
@@ -34,7 +34,7 @@ public class Jumping : MonoBehaviour
         if (!canJump)
         return;
 
-        if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded || movementController.isWallRunning))
+        if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
@@ -43,14 +43,14 @@ public class Jumping : MonoBehaviour
         }
        
     }
-     IEnumerator JumpCooldown()
+    IEnumerator JumpCooldown()
     {
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
       private void DoubleJump()
     {
-        if(movementController.isGrounded && !canDoubleJump)
+        if((movementController.isGrounded || movementController.isWallRunning) && !canDoubleJump)
         canDoubleJump = true;
 
         if(!canDoubleJump || movementController.isGrounded)
@@ -62,7 +62,6 @@ public class Jumping : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
             canDoubleJump = false;
         }
-        
     }
     private void OnEnable() => controlls.Enable();
 

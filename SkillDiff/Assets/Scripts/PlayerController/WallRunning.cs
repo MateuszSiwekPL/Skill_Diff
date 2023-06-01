@@ -8,6 +8,7 @@ public class WallRunning : MonoBehaviour
    MovementController movementController;
    PlayerInputs controlls;
    Rigidbody rb;
+   Jumping jumping;
 
    [Header("Wall Run Values")]
    [SerializeField] float rayLength;
@@ -28,6 +29,7 @@ public class WallRunning : MonoBehaviour
     {
         movementController = gameObject.GetComponent<MovementController>();
         rb = gameObject.GetComponent<Rigidbody>();
+        jumping = gameObject.GetComponent<Jumping>();
         controlls = new PlayerInputs();
     }
 
@@ -46,26 +48,20 @@ public class WallRunning : MonoBehaviour
         return;
 
         if(Physics.Raycast(transform.position, transform.right, out wallHit, rayLength, whatIsWall))
-        {
+        WallRunStart();
+
+        if(Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength, whatIsWall))
+        WallRunStart();
+    }
+
+    private void WallRunStart()
+    {
             wallDirection = wallHit.normal;
             wallRunDirection = Vector3.Cross(wallDirection, transform.up);
             if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
             wallRunDirection = -wallRunDirection;
 
             StartCoroutine(nameof(WallRun));
-            return;
-        }
-
-         if(Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength, whatIsWall))
-        {
-            wallDirection = wallHit.normal;
-            wallRunDirection = Vector3.Cross(wallDirection, transform.up);
-            if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
-            wallRunDirection = -wallRunDirection;
-
-            StartCoroutine(nameof(WallRun));
-            return;
-        }
     }
     private void StopCheck()
     {
@@ -75,7 +71,7 @@ public class WallRunning : MonoBehaviour
             return;
         }
 
-        if(!Physics.Raycast(transform.position, transform.right, rayLength, whatIsWall) && !Physics.Raycast(transform.position, -transform.right, rayLength, whatIsWall))
+        if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
         {
             StopWallRun();
             return;
@@ -90,7 +86,7 @@ public class WallRunning : MonoBehaviour
         isWallRunning = false;
         canWallRun = false;
         movementController.isWallRunning = false;
-
+        jumping.canDoubleJump = true;
     }
 
     IEnumerator WallRunCooldwn()
@@ -100,14 +96,13 @@ public class WallRunning : MonoBehaviour
     }
     IEnumerator WallRun()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         movementController.isWallRunning = true;
         rb.useGravity = false;
         isWallRunning = true;
         
-
         while(true)
         {
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             yield return new WaitForFixedUpdate();
             rb.AddForce(wallRunDirection * wallRunSpeed * 10f, ForceMode.Force);
         }
