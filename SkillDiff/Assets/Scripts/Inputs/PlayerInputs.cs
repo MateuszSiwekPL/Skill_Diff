@@ -80,6 +80,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shooting"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce7f7cdd-8834-42ec-9d1d-e8be37f4254d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""LeftDashing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ffd4960-9614-4c69-8b6a-d36cfbf2b3a9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shooting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_DoubleJump = m_Player.FindAction("DoubleJump", throwIfNotFound: true);
         m_Player_RightDashing = m_Player.FindAction("RightDashing", throwIfNotFound: true);
         m_Player_LeftDashing = m_Player.FindAction("LeftDashing", throwIfNotFound: true);
+        m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,6 +292,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DoubleJump;
     private readonly InputAction m_Player_RightDashing;
     private readonly InputAction m_Player_LeftDashing;
+    private readonly InputAction m_Player_Shooting;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -281,6 +303,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @DoubleJump => m_Wrapper.m_Player_DoubleJump;
         public InputAction @RightDashing => m_Wrapper.m_Player_RightDashing;
         public InputAction @LeftDashing => m_Wrapper.m_Player_LeftDashing;
+        public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +331,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LeftDashing.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
                 @LeftDashing.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
                 @LeftDashing.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftDashing;
+                @Shooting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Shooting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Shooting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -330,6 +356,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LeftDashing.started += instance.OnLeftDashing;
                 @LeftDashing.performed += instance.OnLeftDashing;
                 @LeftDashing.canceled += instance.OnLeftDashing;
+                @Shooting.started += instance.OnShooting;
+                @Shooting.performed += instance.OnShooting;
+                @Shooting.canceled += instance.OnShooting;
             }
         }
     }
@@ -342,5 +371,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnDoubleJump(InputAction.CallbackContext context);
         void OnRightDashing(InputAction.CallbackContext context);
         void OnLeftDashing(InputAction.CallbackContext context);
+        void OnShooting(InputAction.CallbackContext context);
     }
 }
