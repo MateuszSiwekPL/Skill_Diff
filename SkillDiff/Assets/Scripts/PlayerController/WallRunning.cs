@@ -20,6 +20,13 @@ public class WallRunning : MonoBehaviour
    [SerializeField] Vector3 wallRunDirection;
    [SerializeField] float wallRunCooldwn;
 
+   private enum WallSide
+   {
+        right,
+        left
+   }
+   [SerializeField] WallSide wallSide;
+
 
    [Header("Wall Run Values")]
    [SerializeField] float wallRunSpeed;
@@ -38,7 +45,7 @@ public class WallRunning : MonoBehaviour
         if (!isWallRunning && canWallRun)
         WallCheck();
 
-        else
+        else if(isWallRunning)
         StopCheck();
     }
 
@@ -48,20 +55,18 @@ public class WallRunning : MonoBehaviour
         return;
 
         if(Physics.Raycast(transform.position, transform.right, out wallHit, rayLength, whatIsWall))
-        WallRunStart();
+        {
+            wallSide = WallSide.right;
+            StartCoroutine(nameof(WallRun));
+            return;
+        }
 
         if(Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength, whatIsWall))
-        WallRunStart();
-    }
-
-    private void WallRunStart()
-    {
-            wallDirection = wallHit.normal;
-            wallRunDirection = Vector3.Cross(wallDirection, transform.up);
-            if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
-            wallRunDirection = -wallRunDirection;
-
+        {
+            wallSide = WallSide.left;
             StartCoroutine(nameof(WallRun));
+            return;
+        }
     }
     private void StopCheck()
     {
@@ -71,12 +76,22 @@ public class WallRunning : MonoBehaviour
             return;
         }
 
-        if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
+        if(wallSide == WallSide.right)
         {
-            StopWallRun();
-            return;
+             if(!Physics.Raycast(transform.position, transform.right, out wallHit, rayLength, whatIsWall))
+             {
+                StopWallRun();
+                return;  
+             }
         }
-        
+        else 
+        {
+            if(!Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength, whatIsWall))
+             {
+                StopWallRun();
+                return;  
+             }
+        }
     }
     private void StopWallRun()
     {
@@ -103,8 +118,15 @@ public class WallRunning : MonoBehaviour
         while(true)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            yield return new WaitForFixedUpdate();
+
+            wallDirection = wallHit.normal;
+            wallRunDirection = Vector3.Cross(wallDirection, transform.up);
+            if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
+            wallRunDirection = -wallRunDirection;
+
             rb.AddForce(wallRunDirection * wallRunSpeed * 10f, ForceMode.Force);
+
+            yield return new WaitForFixedUpdate();
         }
     }
 

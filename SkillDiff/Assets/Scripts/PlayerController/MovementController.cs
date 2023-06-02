@@ -64,7 +64,7 @@ public class MovementController : MonoBehaviour
         if(dashing)
         {
             state = State.dashing;
-            maxVelocity = 20f;
+            maxVelocity = 30f;
         }
 
         else if(isWallRunning)
