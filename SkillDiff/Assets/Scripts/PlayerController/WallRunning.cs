@@ -78,7 +78,7 @@ public class WallRunning : MonoBehaviour
 
         if(wallSide == WallSide.right)
         {
-             if(!Physics.Raycast(transform.position, transform.right, out wallHit, rayLength, whatIsWall))
+             if(!Physics.Raycast(transform.position, transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
              {
                 StopWallRun();
                 return;  
@@ -86,7 +86,7 @@ public class WallRunning : MonoBehaviour
         }
         else 
         {
-            if(!Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength, whatIsWall))
+            if(!Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
              {
                 StopWallRun();
                 return;  
@@ -114,11 +114,10 @@ public class WallRunning : MonoBehaviour
         movementController.isWallRunning = true;
         rb.useGravity = false;
         isWallRunning = true;
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         
         while(true)
         {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
             wallDirection = wallHit.normal;
             wallRunDirection = Vector3.Cross(wallDirection, transform.up);
             if((transform.forward - wallRunDirection).magnitude > (transform.forward - -wallRunDirection).magnitude)
