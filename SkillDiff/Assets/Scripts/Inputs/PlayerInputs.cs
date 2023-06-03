@@ -89,6 +89,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DownDashing"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7d6c1aa-c4dd-4d63-ab29-0d5dd35211f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SlashAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""159d35bb-a73d-4766-87d6-bd4a971a5c2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +230,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Shooting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""238dcfc2-fadd-4a3a-986c-0d0367840322"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DownDashing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a68f8bc5-6a85-4e10-a31f-3998775d388b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SlashAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +267,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_RightDashing = m_Player.FindAction("RightDashing", throwIfNotFound: true);
         m_Player_LeftDashing = m_Player.FindAction("LeftDashing", throwIfNotFound: true);
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
+        m_Player_DownDashing = m_Player.FindAction("DownDashing", throwIfNotFound: true);
+        m_Player_SlashAttack = m_Player.FindAction("SlashAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,6 +335,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RightDashing;
     private readonly InputAction m_Player_LeftDashing;
     private readonly InputAction m_Player_Shooting;
+    private readonly InputAction m_Player_DownDashing;
+    private readonly InputAction m_Player_SlashAttack;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -304,6 +348,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @RightDashing => m_Wrapper.m_Player_RightDashing;
         public InputAction @LeftDashing => m_Wrapper.m_Player_LeftDashing;
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
+        public InputAction @DownDashing => m_Wrapper.m_Player_DownDashing;
+        public InputAction @SlashAttack => m_Wrapper.m_Player_SlashAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -334,6 +380,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Shooting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @DownDashing.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownDashing;
+                @DownDashing.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownDashing;
+                @DownDashing.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownDashing;
+                @SlashAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlashAttack;
+                @SlashAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlashAttack;
+                @SlashAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSlashAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -359,6 +411,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Shooting.started += instance.OnShooting;
                 @Shooting.performed += instance.OnShooting;
                 @Shooting.canceled += instance.OnShooting;
+                @DownDashing.started += instance.OnDownDashing;
+                @DownDashing.performed += instance.OnDownDashing;
+                @DownDashing.canceled += instance.OnDownDashing;
+                @SlashAttack.started += instance.OnSlashAttack;
+                @SlashAttack.performed += instance.OnSlashAttack;
+                @SlashAttack.canceled += instance.OnSlashAttack;
             }
         }
     }
@@ -372,5 +430,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnRightDashing(InputAction.CallbackContext context);
         void OnLeftDashing(InputAction.CallbackContext context);
         void OnShooting(InputAction.CallbackContext context);
+        void OnDownDashing(InputAction.CallbackContext context);
+        void OnSlashAttack(InputAction.CallbackContext context);
     }
 }

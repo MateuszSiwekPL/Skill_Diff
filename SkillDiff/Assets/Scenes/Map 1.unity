@@ -13562,7 +13562,7 @@ GameObject:
   - component: {fileID: 309532930}
   - component: {fileID: 309532932}
   - component: {fileID: 309532931}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15075,7 +15075,7 @@ GameObject:
   - component: {fileID: 1685867124}
   - component: {fileID: 1685867125}
   - component: {fileID: 1685867126}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
