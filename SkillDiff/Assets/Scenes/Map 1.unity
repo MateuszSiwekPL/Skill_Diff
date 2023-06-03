@@ -13878,7 +13878,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24300
+  m_Name: pb_Mesh24302
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14280,7 +14280,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24318
+  m_Name: pb_Mesh24320
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14452,6 +14452,7 @@ GameObject:
   - component: {fileID: 800630812}
   - component: {fileID: 800630811}
   - component: {fileID: 800630810}
+  - component: {fileID: 800630815}
   m_Layer: 7
   m_Name: Target
   m_TagString: Untagged
@@ -14479,7 +14480,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800630809}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -14549,6 +14550,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &800630815
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800630809}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1 &938046800
 GameObject:
   m_ObjectHideFlags: 0
@@ -15075,6 +15092,7 @@ GameObject:
   - component: {fileID: 1685867124}
   - component: {fileID: 1685867125}
   - component: {fileID: 1685867126}
+  - component: {fileID: 1685867127}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -15260,6 +15278,23 @@ MonoBehaviour:
   wallRunCooldwn: 0.5
   wallSide: 0
   wallRunSpeed: 32
+--- !u!114 &1685867127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685867116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95fa5d06c44aa4843a1af01c41bd6793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCooldown: 2.5
+  dashForce: 100
+  attackDuration: 0.3
+  canAttack: 1
+  attacking: 0
 --- !u!1 &1895625110
 GameObject:
   m_ObjectHideFlags: 0
