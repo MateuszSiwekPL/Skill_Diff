@@ -19,6 +19,7 @@ public class Shooting : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] bool canShoot;
     [SerializeField] float shootingCooldown;
+    float timePassed;
 
     private void Awake() 
     {
@@ -53,7 +54,15 @@ public class Shooting : MonoBehaviour
 
     IEnumerator ShootingCooldown()
     {
-        yield return new WaitForSeconds(shootingCooldown);
+        reloadStatus.fillAmount = 0f;
+        timePassed = 0f;
+        while (timePassed < shootingCooldown)
+        {
+            reloadStatus.fillAmount = timePassed;
+            yield return new WaitForFixedUpdate();
+            timePassed += Time.deltaTime;
+        }
+        reloadStatus.fillAmount = 1f;
         canShoot = true;
     }
 
