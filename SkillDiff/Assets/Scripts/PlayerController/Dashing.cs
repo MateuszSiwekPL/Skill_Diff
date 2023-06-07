@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Dashing : MonoBehaviour
 {
     [Header("References")]
@@ -18,6 +18,10 @@ public class Dashing : MonoBehaviour
     [Header("Slash Attack")]
     bool attacking;
     Camera cam;
+
+    [Header("Cooldown")] 
+    [SerializeField] Image cooldownBar;
+    float timePassed;
 
     private void Awake() 
     {
@@ -68,7 +72,14 @@ public class Dashing : MonoBehaviour
     }
     IEnumerator DashCooldown()
     {
-        yield return new WaitForSeconds(dashCooldown); 
+        timePassed = 0f;
+        while (timePassed < dashCooldown)
+        {
+            cooldownBar.fillAmount = timePassed/dashCooldown;
+            timePassed += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        } 
+        cooldownBar.fillAmount = 1f;
         canDash = true;
         
     }

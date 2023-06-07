@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlashAttack : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class SlashAttack : MonoBehaviour
     [SerializeField] float attackDuration;
     [SerializeField] bool canAttack;
     [SerializeField] bool attacking;
+
+    [Header("Cooldown")]
+    [SerializeField] Image cooldownBar;
+    float timePassed;
 
     private void Awake() 
     {
@@ -64,7 +69,14 @@ public class SlashAttack : MonoBehaviour
     }
     IEnumerator AttackCooldown()
     {
-        yield return new WaitForSeconds(attackCooldown); 
+        timePassed = 0f;
+        while (timePassed < attackCooldown)
+        {
+            cooldownBar.fillAmount = timePassed/attackCooldown;
+            timePassed += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        } 
+        cooldownBar.fillAmount = 1f;
         canAttack = true;
         
     }
