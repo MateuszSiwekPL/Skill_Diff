@@ -662,6 +662,7 @@ GameObject:
   - component: {fileID: 890805315}
   - component: {fileID: 890805314}
   - component: {fileID: 890805313}
+  - component: {fileID: 890805316}
   m_Layer: 5
   m_Name: Shop
   m_TagString: Untagged
@@ -772,6 +773,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890805311}
   m_CullTransparentMesh: 1
+--- !u!114 &890805316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890805311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd153899c5e23c04aa02cee633e0efe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneID: 0
 --- !u!1 &1117564519
 GameObject:
   m_ObjectHideFlags: 0
@@ -919,6 +933,7 @@ GameObject:
   - component: {fileID: 1131065276}
   - component: {fileID: 1131065275}
   - component: {fileID: 1131065274}
+  - component: {fileID: 1131065277}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -990,7 +1005,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1131065275}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1131065277}
+        m_TargetAssemblyTypeName: SceneChanging, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1131065275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1029,6 +1056,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1131065272}
   m_CullTransparentMesh: 1
+--- !u!114 &1131065277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131065272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd153899c5e23c04aa02cee633e0efe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneID: 1
 --- !u!1 &1537919673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,6 +1216,7 @@ GameObject:
   - component: {fileID: 1646006012}
   - component: {fileID: 1646006011}
   - component: {fileID: 1646006010}
+  - component: {fileID: 1646006013}
   m_Layer: 5
   m_Name: Skins
   m_TagString: Untagged
@@ -1286,6 +1327,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1646006008}
   m_CullTransparentMesh: 1
+--- !u!114 &1646006013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646006008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd153899c5e23c04aa02cee633e0efe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneID: 0
 --- !u!1 &1692089718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,6 +1446,7 @@ GameObject:
   - component: {fileID: 1834703056}
   - component: {fileID: 1834703055}
   - component: {fileID: 1834703054}
+  - component: {fileID: 1834703057}
   m_Layer: 5
   m_Name: Options
   m_TagString: Untagged
@@ -1502,6 +1557,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834703052}
   m_CullTransparentMesh: 1
+--- !u!114 &1834703057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834703052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd153899c5e23c04aa02cee633e0efe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneID: 0
 --- !u!1 &2105541845
 GameObject:
   m_ObjectHideFlags: 0
