@@ -19,7 +19,7 @@ public class SlashAttack : MonoBehaviour
     [SerializeField] bool attacking;
 
     [Header("Cooldown")]
-    [SerializeField] Image cooldownBar;
+    Image cooldownBar;
     float timePassed;
 
     private void Awake() 
@@ -28,6 +28,7 @@ public class SlashAttack : MonoBehaviour
         controlls = new PlayerInputs();
         movementController = gameObject.GetComponent<MovementController>();
         cam = Camera.main;
+        cooldownBar = GameObject.Find("Attack_Indicator").GetComponent<Image>();
     }
 
     private void Update() 

@@ -20,7 +20,7 @@ public class Dashing : MonoBehaviour
     Camera cam;
 
     [Header("Cooldown")] 
-    [SerializeField] Image cooldownBar;
+    Image cooldownBar;
     float timePassed;
 
     private void Awake() 
@@ -29,6 +29,7 @@ public class Dashing : MonoBehaviour
         controlls = new PlayerInputs();
         movementController = gameObject.GetComponent<MovementController>();
         cam = Camera.main;
+        cooldownBar = GameObject.Find("Dash_Indicator").GetComponent<Image>();
     }
 
     private void Update() 
