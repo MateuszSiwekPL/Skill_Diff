@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class CameraLook : MonoBehaviour
 {
    
-    PlayerInputs controlls;
-    [SerializeField] Transform player;
+     PlayerInputs controlls;
+     Transform player;
 
 
     float sensitivity = 25f;
@@ -22,6 +22,7 @@ public class CameraLook : MonoBehaviour
         controlls = new PlayerInputs();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        player = GameObject.Find("Player").transform;
    }
 
    private void Update() 

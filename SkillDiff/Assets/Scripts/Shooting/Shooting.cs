@@ -8,7 +8,7 @@ public class Shooting : MonoBehaviour
    [Header("References")]
    PlayerInputs controlls;
    [SerializeField] LineRenderer line;
-   [SerializeField] Image reloadStatus;
+   Image reloadStatus;
    Camera cam;
 
     [Header("Raycasting")]
@@ -26,6 +26,7 @@ public class Shooting : MonoBehaviour
         controlls = new PlayerInputs();
         cam = Camera.main;
         line.positionCount = 2;
+        reloadStatus = GameObject.Find("Reload_Indicator").GetComponent<Image>();
         
     }
    private void Update() 

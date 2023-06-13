@@ -5,6 +5,10 @@ using UnityEngine;
 public class CameraPosition : MonoBehaviour
 {
     [SerializeField] Transform player;
+
+    private void Awake() {
+        player = GameObject.Find("Player").transform;
+    }
     
     void Update()
     {
