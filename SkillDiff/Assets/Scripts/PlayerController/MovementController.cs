@@ -64,19 +64,19 @@ public class MovementController : MonoBehaviour
         if(dashing)
         {
             state = State.dashing;
-            maxVelocity = 30f;
+            maxVelocity = 40f;
         }
 
         else if(isWallRunning)
         {
             state = State.wallRunning;
-            maxVelocity = 10f;
+            maxVelocity = 15f;
         }
 
         else
         {
             state = State.running;
-            maxVelocity = 10f;
+            maxVelocity = 15f;
         }
     }
 
@@ -92,8 +92,6 @@ public class MovementController : MonoBehaviour
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
 
         rb.drag = isGrounded == true? groundedDrag : airDrag;
-
-
     }
     private void SpeedConstrain()
     {
