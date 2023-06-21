@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class CameraPosition : MonoBehaviour
+
+public class CameraPosition : NetworkBehaviour
 {
     [SerializeField] Transform player;
 
-    private void Awake() {
-        player = GameObject.Find("Player").transform;
+    public override void OnNetworkSpawn() {
+        player = GameObject.Find("Player(clone)").transform;
     }
     
     void Update()
     {
-        transform.position = player.position;
+        //transform.position = player.position;
     }
 }
