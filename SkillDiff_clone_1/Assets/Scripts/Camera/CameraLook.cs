@@ -20,8 +20,8 @@ public class CameraLook : MonoBehaviour
    private void Awake() 
    {
         controlls = new PlayerInputs();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         player = GameObject.Find("Player").transform;
    }
 
