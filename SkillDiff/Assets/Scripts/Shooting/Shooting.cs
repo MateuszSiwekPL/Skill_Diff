@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class Shooting : MonoBehaviour
+public class Shooting : NetworkBehaviour
 {
    [Header("References")]
    PlayerInputs controlls;
@@ -21,9 +22,13 @@ public class Shooting : MonoBehaviour
     [SerializeField] float shootingCooldown;
     float timePassed;
 
-    private void Awake() 
+
+    private void Awake()
     {
         controlls = new PlayerInputs();
+    }
+    private void Start() 
+    {
         cam = Camera.main;
         line.positionCount = 2;
         reloadStatus = GameObject.Find("Reload_Indicator").GetComponent<Image>();

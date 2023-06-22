@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class SlashAttack : MonoBehaviour
+public class SlashAttack : NetworkBehaviour
 {
-   [Header("References")]
+    [Header("References")]
     MovementController movementController;
     Rigidbody rb;
     PlayerInputs controlls;
@@ -22,10 +23,13 @@ public class SlashAttack : MonoBehaviour
     Image cooldownBar;
     float timePassed;
 
-    private void Awake() 
+    private void Awake()
+    {
+        controlls = new PlayerInputs();
+    }
+    private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        controlls = new PlayerInputs();
         movementController = gameObject.GetComponent<MovementController>();
         cam = Camera.main;
         cooldownBar = GameObject.Find("Attack_Indicator").GetComponent<Image>();

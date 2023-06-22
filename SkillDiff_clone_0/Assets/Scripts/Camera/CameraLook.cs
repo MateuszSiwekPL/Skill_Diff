@@ -7,7 +7,7 @@ public class CameraLook : MonoBehaviour
 {
    
      PlayerInputs controlls;
-     Transform player;
+     public Transform player;
 
 
     float sensitivity = 25f;
@@ -19,11 +19,11 @@ public class CameraLook : MonoBehaviour
 
    private void Awake() 
    {
-        controlls = new PlayerInputs();
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-        player = GameObject.Find("Player").transform;
-   }
+          controlls = new PlayerInputs();
+          //Cursor.lockState = CursorLockMode.Locked;
+          //Cursor.visible = false;
+          
+   } 
 
    private void Update() 
    {
