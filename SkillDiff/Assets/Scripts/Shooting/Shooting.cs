@@ -36,30 +36,45 @@ public class Shooting : NetworkBehaviour
     }
    private void Update() 
    {
+        if(!IsOwner) return;
+
         if (controlls.Player.Shooting.WasPressedThisFrame() && canShoot)
-        {
-            Shoot();
-        }
+        ShootingServerRpc();
    }
 
-    private void Shoot()
+    [ServerRpc]
+    private void ShootingServerRpc()
+    {
+        ShootClientRpc();
+    }
+
+    [ClientRpc]
+    private void ShootClientRpc()
     {
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, rayLength, whatIsShootable))
         {
-            canShoot = false;
             IKillable target = hit.collider.GetComponent<IKillable>();
             if(target != null)
             {
                 target.Kill();
             }
 
-            StartCoroutine(ShootingCooldown());
+            if(IsOwner) 
+            CooldownServerRpc();
+
             StartCoroutine(SmokeTrail());
         }
     }
 
+    [ServerRpc]
+    private void CooldownServerRpc()
+    {
+        StartCoroutine(ShootingCooldown());
+    }
+
     IEnumerator ShootingCooldown()
     {
+        canShoot = false;
         reloadStatus.fillAmount = 0f;
         timePassed = 0f;
         while (timePassed < shootingCooldown)
@@ -93,12 +108,5 @@ public class Shooting : NetworkBehaviour
 
     private void OnEnable() => controlls.Enable();
     private void OnDisable() => controlls.Disable();
-
-
-    // private void OnDrawGizmos() 
-    // {
-    //     Gizmos.color = Color.green;
-    //     Gizmos.DrawRay(cam.transform.position, cam.transform.forward * rayLength);
-    // }
 
 }

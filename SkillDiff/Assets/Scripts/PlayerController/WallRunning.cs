@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class WallRunning : MonoBehaviour
+public class WallRunning : NetworkBehaviour
 {
    [Header("References")]
    MovementController movementController;
@@ -42,6 +43,8 @@ public class WallRunning : MonoBehaviour
 
     private void Update() 
     {
+        if(!IsServer) return;
+
         if (!isWallRunning && canWallRun)
         WallCheck();
 

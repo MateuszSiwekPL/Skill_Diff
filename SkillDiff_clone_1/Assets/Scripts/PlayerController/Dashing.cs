@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class Dashing : MonoBehaviour
+using Unity.Netcode;
+public class Dashing : NetworkBehaviour
 {
     [Header("References")]
     MovementController movementController;
@@ -34,6 +35,7 @@ public class Dashing : MonoBehaviour
 
     private void Update() 
     {
+        if(!IsOwner) return;
         Dash();
     }
     private void Dash()
@@ -43,20 +45,25 @@ public class Dashing : MonoBehaviour
 
         if (controlls.Player.RightDashing.WasPressedThisFrame())
         {
-            StartCoroutine(AddingForce(transform.right));
+            AddingForceServerRpc(transform.right);
         }
 
         if (controlls.Player.LeftDashing.WasPressedThisFrame())
         {
-            StartCoroutine(AddingForce(-transform.right));
+            AddingForceServerRpc(-transform.right);
         }
 
         if (controlls.Player.DownDashing.WasPressedThisFrame())
         {
-            StartCoroutine(AddingForce(-transform.up));
+            AddingForceServerRpc(-transform.up);
         }
 
        
+    }
+    [ServerRpc]
+    private void AddingForceServerRpc(Vector3 direction)
+    {
+        StartCoroutine(AddingForce(direction));
     }
     IEnumerator AddingForce(Vector3 direction)
     {

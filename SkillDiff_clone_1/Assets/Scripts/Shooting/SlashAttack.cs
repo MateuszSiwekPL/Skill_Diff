@@ -37,19 +37,21 @@ public class SlashAttack : NetworkBehaviour
 
     private void Update() 
     {
-        Attack();
+        if(!IsOwner) return;
+
+        if (controlls.Player.SlashAttack.WasPressedThisFrame())
+        AttackServerRpc();
     }
 
-    private void Attack()
+    [ServerRpc]
+    private void AttackServerRpc()
     {
         if (!canAttack)
         return;
 
-        if (controlls.Player.SlashAttack.WasPressedThisFrame())
-        {
-            StartCoroutine(EnableAttack());
-            StartCoroutine(AddingForce(cam.transform.forward));
-        }
+        StartCoroutine(EnableAttack());
+        StartCoroutine(AddingForce(cam.transform.forward));
+        
     }
 
        IEnumerator EnableAttack()

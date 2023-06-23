@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Jumping : MonoBehaviour
+public class Jumping : NetworkBehaviour
 {
     [Header("References")]
     MovementController movementController;
@@ -26,21 +27,25 @@ public class Jumping : MonoBehaviour
     }
     private void Update() 
     {
-        Jump();
-        DoubleJump();    
+        if(!IsOwner) return;
+        
+        if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded))
+        JumpServerRpc();
+
+        if(controlls.Player.DoubleJump.WasPressedThisFrame())
+        DoubleJumpServerRpc();    
     }
-       private void Jump()
+        [ServerRpc]
+    private void JumpServerRpc()
     {   
         if (!canJump)
         return;
 
-        if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded))
-        {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
-            canJump = false;
-            StartCoroutine(JumpCooldown());
-        }
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
+        canJump = false;
+        StartCoroutine(JumpCooldown());
+        
        
     }
     IEnumerator JumpCooldown()
@@ -48,7 +53,9 @@ public class Jumping : MonoBehaviour
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
-      private void DoubleJump()
+
+    [ServerRpc]
+    private void DoubleJumpServerRpc()
     {
         if((movementController.isGrounded || movementController.isWallRunning) && !canDoubleJump)
         canDoubleJump = true;
@@ -56,12 +63,10 @@ public class Jumping : MonoBehaviour
         if(!canDoubleJump || movementController.isGrounded)
         return;
 
-        if(controlls.Player.DoubleJump.WasPressedThisFrame())
-        {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
-            canDoubleJump = false;
-        }
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
+        canDoubleJump = false;
+        
     }
     private void OnEnable() => controlls.Enable();
 
