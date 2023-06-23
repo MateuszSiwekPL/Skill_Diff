@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class MovementController : MonoBehaviour
+public class MovementController : NetworkBehaviour
 {
   
     PlayerInputs controlls;
@@ -43,17 +44,33 @@ public class MovementController : MonoBehaviour
     {
         controlls = new PlayerInputs();
         rb = gameObject.GetComponent<Rigidbody>();
+
+        if(IsOwner)
+        PlacementServerRpc();
         
+        
+    }
+
+    [ServerRpc]
+    private void PlacementServerRpc()
+    {
+        transform.position = new Vector3(0,2,0);
     }
 
     private void FixedUpdate()
     {
+        if (!IsOwner) return;
         if (state != State.wallRunning)
-        Running();
+        {
+        Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
+        RunningServerRpc(input);
+        }
     }
 
     private void Update() 
     {
+
+
         StateHandler();
         GroundCheck();
         SpeedConstrain();
@@ -80,9 +97,10 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private void Running()
+    [ServerRpc]
+    private void RunningServerRpc(Vector2 input)
     {
-        Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
+        
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
