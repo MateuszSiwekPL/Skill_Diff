@@ -13,7 +13,6 @@ public class CameraLook : MonoBehaviour
     float sensitivity = 25f;
     float rotationX = 0f;
     float rotationY = 0f;
-    Vector2 look;
     
 
 
@@ -26,29 +25,29 @@ public class CameraLook : MonoBehaviour
    } 
 
    private void Update() 
-   {
-        Looking();
+   { 
+          Looking();
    }
+     private void Looking()
+     {
+          Vector2 look = controlls.Player.Look.ReadValue<Vector2>();
+          float lookX = look.x * sensitivity * Time.deltaTime;
+          float lookY = look.y * sensitivity * Time.deltaTime;
 
-   private void Looking()
-   {
-        look = controlls.Player.Look.ReadValue<Vector2>();
-        float lookX = look.x * sensitivity * Time.deltaTime;
-        float lookY = look.y * sensitivity * Time.deltaTime;
+          rotationY += lookX;
 
-        rotationY += lookX;
+          rotationX -= lookY;
+          rotationX = Mathf.Clamp(rotationX, -90f, 90f);
 
-        rotationX -= lookY;
-        rotationX = Mathf.Clamp(rotationX, -90f, 90f);
+          transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+          player.gameObject.GetComponent<PlayerRotation>().RotationServerRpc(rotationY);
+     }
 
-        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        player.rotation = Quaternion.Euler(0, rotationY, 0);
-
-   }
+     
 
 
 
-   private void OnEnable() => controlls.Enable();
+     private void OnEnable() => controlls.Enable();
 
-   private void OnDisable() => controlls.Disable();
+     private void OnDisable() => controlls.Disable();
 }

@@ -14,6 +14,10 @@ public class CameraSpawn : NetworkBehaviour
             var playerCamera = Instantiate(cam);
             playerCamera.GetComponent<CameraLook>().player = transform;
             playerCamera.GetComponent<CameraPosition>().player = transform;
+
         }
     }
+
+   
+   
 }

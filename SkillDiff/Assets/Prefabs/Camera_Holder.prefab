@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 329703408051980386}
-  - component: {fileID: 2249202106669744582}
-  - component: {fileID: -6755192810125512172}
+  - component: {fileID: 9183111272492540765}
+  - component: {fileID: 2757979492338058311}
   m_Layer: 3
   m_Name: Camera_Holder
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2249202106669744582
+--- !u!114 &9183111272492540765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e70182a4ff84641acc9623b0e98105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-6755192810125512172
+  player: {fileID: 0}
+--- !u!114 &2757979492338058311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
