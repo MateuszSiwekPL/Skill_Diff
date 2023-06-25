@@ -38,39 +38,29 @@ public class Shooting : NetworkBehaviour
    {
         if(!IsOwner) return;
 
-        if (controlls.Player.Shooting.WasPressedThisFrame() && canShoot)
-        ShootingServerRpc();
+        if (controlls.Player.Shooting.WasPressedThisFrame())
+        ShootingServerRpc(cam.transform.forward);
    }
 
     [ServerRpc]
-    private void ShootingServerRpc()
+    private void ShootingServerRpc(Vector3 direction)
     {
-        ShootClientRpc();
+        if(!canShoot) return;
+
+        if(Physics.Raycast(transform.position, direction, out hit, rayLength, whatIsShootable))
+        {
+            IKillable target = hit.collider.GetComponent<IKillable>();
+            if(target != null) target.Kill();
+            
+            StartCoroutine(ShootingCooldown());
+            SmokeTrailClientRpc(hit.point);
+        }
+        
     }
 
     [ClientRpc]
-    private void ShootClientRpc()
-    {
-        if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, rayLength, whatIsShootable))
-        {
-            IKillable target = hit.collider.GetComponent<IKillable>();
-            if(target != null)
-            {
-                target.Kill();
-            }
-
-            if(IsOwner) 
-            CooldownServerRpc();
-
-            StartCoroutine(SmokeTrail());
-        }
-    }
-
-    [ServerRpc]
-    private void CooldownServerRpc()
-    {
-        StartCoroutine(ShootingCooldown());
-    }
+    private void SmokeTrailClientRpc(Vector3 hitPosition) => StartCoroutine(SmokeTrail(hitPosition));
+    
 
     IEnumerator ShootingCooldown()
     {
@@ -87,11 +77,11 @@ public class Shooting : NetworkBehaviour
         canShoot = true;
     }
 
-    IEnumerator SmokeTrail()
+    IEnumerator SmokeTrail(Vector3 hitPosition)
     {
         line.enabled = true;
-        line.SetPosition(0, cam.transform.position);
-        line.SetPosition(1, hit.point);
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, hitPosition);
         line.startWidth = 0.25f;
         line.endWidth = 0.25f;
         
