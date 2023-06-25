@@ -63,7 +63,10 @@ public class Dashing : NetworkBehaviour
     [ServerRpc]
     private void AddingForceServerRpc(Vector3 direction)
     {
+        if(!canDash) return;
         StartCoroutine(AddingForce(direction));
+        DashIndicatorClientRpc();
+
     }
     IEnumerator AddingForce(Vector3 direction)
     {
@@ -80,6 +83,18 @@ public class Dashing : NetworkBehaviour
     }
     IEnumerator DashCooldown()
     {
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+    [ClientRpc]
+    private void DashIndicatorClientRpc() 
+    {
+        if(!IsOwner) return;
+        StartCoroutine(DashIndicator());
+    }
+    IEnumerator DashIndicator()
+    {
         timePassed = 0f;
         while (timePassed < dashCooldown)
         {
@@ -88,8 +103,6 @@ public class Dashing : NetworkBehaviour
             yield return new WaitForFixedUpdate();
         } 
         cooldownBar.fillAmount = 1f;
-        canDash = true;
-        
     }
     IEnumerator DashDuration()
     {

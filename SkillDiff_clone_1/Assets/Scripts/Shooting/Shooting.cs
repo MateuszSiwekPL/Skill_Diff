@@ -40,6 +40,8 @@ public class Shooting : NetworkBehaviour
 
         if (controlls.Player.Shooting.WasPressedThisFrame())
         ShootingServerRpc(cam.transform.forward);
+        
+
    }
 
     [ServerRpc]
@@ -65,6 +67,12 @@ public class Shooting : NetworkBehaviour
     IEnumerator ShootingCooldown()
     {
         canShoot = false;
+        yield return new WaitForSeconds(shootingCooldown);
+        canShoot = true;
+    }
+
+    IEnumerator ShootingIndicator()
+    {
         reloadStatus.fillAmount = 0f;
         timePassed = 0f;
         while (timePassed < shootingCooldown)
@@ -74,11 +82,11 @@ public class Shooting : NetworkBehaviour
             timePassed += Time.deltaTime;
         }
         reloadStatus.fillAmount = 1f;
-        canShoot = true;
     }
 
     IEnumerator SmokeTrail(Vector3 hitPosition)
     {
+        StartCoroutine(ShootingIndicator());
         line.enabled = true;
         line.SetPosition(0, transform.position);
         line.SetPosition(1, hitPosition);

@@ -40,21 +40,22 @@ public class SlashAttack : NetworkBehaviour
         if(!IsOwner) return;
 
         if (controlls.Player.SlashAttack.WasPressedThisFrame())
-        AttackServerRpc();
-    }
-
-    [ServerRpc]
-    private void AttackServerRpc()
-    {
-        if (!canAttack)
-        return;
-
-        StartCoroutine(EnableAttack());
-        StartCoroutine(AddingForce(cam.transform.forward));
+        AttackServerRpc(cam.transform.forward);
         
     }
 
-       IEnumerator EnableAttack()
+    [ServerRpc]
+    private void AttackServerRpc(Vector3 direction)
+    {
+        if (!canAttack) return;
+
+        StartCoroutine(EnableAttack());
+        StartCoroutine(AddingForce(direction));
+        SlashIndicatorClientRpc();
+        
+    }
+
+    IEnumerator EnableAttack()
     {
         attacking = true;
         yield return new WaitForSeconds(attackDuration);
@@ -64,7 +65,6 @@ public class SlashAttack : NetworkBehaviour
     IEnumerator AddingForce(Vector3 direction)
     {
         movementController.dashing = true;
-        canAttack = false;
         StartCoroutine(AttackDuration());
         StartCoroutine(AttackCooldown());
 
@@ -76,6 +76,19 @@ public class SlashAttack : NetworkBehaviour
     }
     IEnumerator AttackCooldown()
     {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
+    [ClientRpc]
+    private void SlashIndicatorClientRpc()
+    {
+        if(!IsOwner) return;
+        StartCoroutine(SlashIndicator());
+    }
+    IEnumerator SlashIndicator()
+    {
         timePassed = 0f;
         while (timePassed < attackCooldown)
         {
@@ -84,8 +97,6 @@ public class SlashAttack : NetworkBehaviour
             yield return new WaitForFixedUpdate();
         } 
         cooldownBar.fillAmount = 1f;
-        canAttack = true;
-        
     }
     IEnumerator AttackDuration()
     {
