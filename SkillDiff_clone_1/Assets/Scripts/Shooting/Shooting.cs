@@ -39,13 +39,15 @@ public class Shooting : NetworkBehaviour
         if(!IsOwner) return;
 
         if (controlls.Player.Shooting.WasPressedThisFrame())
-        ShootingServerRpc(cam.transform.forward);
-        
-
+        {
+            ShootServerRpc(cam.transform.forward);
+            Shoot(cam.transform.forward);
+        }
    }
 
     [ServerRpc]
-    private void ShootingServerRpc(Vector3 direction)
+    private void ShootServerRpc(Vector3 direction) => Shoot(direction);
+    private void Shoot(Vector3 direction)
     {
         if(!canShoot) return;
 
@@ -55,15 +57,15 @@ public class Shooting : NetworkBehaviour
             if(target != null) target.Kill();
             
             StartCoroutine(ShootingCooldown());
-            SmokeTrailClientRpc(hit.point);
+
+            if(IsOwner)
+            {
+            StartCoroutine(SmokeTrail(hit.point));
+            StartCoroutine(ShootingIndicator());
+            }
         }
         
     }
-
-    [ClientRpc]
-    private void SmokeTrailClientRpc(Vector3 hitPosition) => StartCoroutine(SmokeTrail(hitPosition));
-    
-
     IEnumerator ShootingCooldown()
     {
         canShoot = false;
@@ -86,7 +88,7 @@ public class Shooting : NetworkBehaviour
 
     IEnumerator SmokeTrail(Vector3 hitPosition)
     {
-        StartCoroutine(ShootingIndicator());
+        
         line.enabled = true;
         line.SetPosition(0, transform.position);
         line.SetPosition(1, hitPosition);

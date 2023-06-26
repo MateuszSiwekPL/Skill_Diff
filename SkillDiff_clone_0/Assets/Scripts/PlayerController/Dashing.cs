@@ -46,34 +46,43 @@ public class Dashing : NetworkBehaviour
         if (controlls.Player.RightDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(transform.right);
+            if(canDash)
+            StartCoroutine(AddingForce(transform.right));
         }
 
         if (controlls.Player.LeftDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(-transform.right);
+            if(canDash)
+            StartCoroutine(AddingForce(-transform.right));
         }
 
         if (controlls.Player.DownDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(-transform.up);
+            if(canDash)
+            StartCoroutine(AddingForce(-transform.up));
         }
 
        
     }
     [ServerRpc]
-    private void AddingForceServerRpc(Vector3 direction)
+    private void AddingForceServerRpc(Vector3 direction) 
     {
         if(!canDash) return;
         StartCoroutine(AddingForce(direction));
-        DashIndicatorClientRpc();
-
     }
+    
     IEnumerator AddingForce(Vector3 direction)
     {
+        
         movementController.dashing = true;
         canDash = false;
         StartCoroutine(DashDuration());
         StartCoroutine(DashCooldown());
+
+        if(IsOwner)
+        StartCoroutine(DashIndicator());
 
         while(movementController.dashing)
         {
@@ -87,12 +96,6 @@ public class Dashing : NetworkBehaviour
         canDash = true;
     }
 
-    [ClientRpc]
-    private void DashIndicatorClientRpc() 
-    {
-        if(!IsOwner) return;
-        StartCoroutine(DashIndicator());
-    }
     IEnumerator DashIndicator()
     {
         timePassed = 0f;

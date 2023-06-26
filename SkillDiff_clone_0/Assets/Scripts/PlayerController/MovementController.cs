@@ -44,33 +44,21 @@ public class MovementController : NetworkBehaviour
     {
         controlls = new PlayerInputs();
         rb = gameObject.GetComponent<Rigidbody>();
-
-        if(IsOwner)
-        PlacementServerRpc();
-        
-        
     }
-
-    [ServerRpc]
-    private void PlacementServerRpc()
-    {
-        transform.position = new Vector3(0,2,0);
-    }
-
     private void FixedUpdate()
     {
         if (!IsOwner) return;
+
         if (state != State.wallRunning)
         {
         Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
         RunningServerRpc(input);
+        Running(input);
         }
     }
 
     private void Update() 
     {
-
-
         StateHandler();
         GroundCheck();
         SpeedConstrain();
@@ -98,9 +86,10 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input)
+    private void RunningServerRpc(Vector2 input) => Running(input);
+
+    private void Running(Vector2 input)
     {
-        
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;

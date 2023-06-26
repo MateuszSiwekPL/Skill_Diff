@@ -45,7 +45,9 @@ public class SlashAttack : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void AttackServerRpc(Vector3 direction)
+    private void AttackServerRpc(Vector3 direction) => Attack(direction);
+
+    private void Attack(Vector3 direction)
     {
         if (!canAttack) return;
 

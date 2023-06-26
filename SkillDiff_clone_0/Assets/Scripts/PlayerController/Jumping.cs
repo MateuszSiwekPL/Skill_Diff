@@ -30,13 +30,21 @@ public class Jumping : NetworkBehaviour
         if(!IsOwner) return;
         
         if (controlls.Player.Jumping.ReadValue<float>() > 0 && (movementController.isGrounded))
-        JumpServerRpc();
+        {
+            JumpServerRpc();
+            Jump();
+        }
 
         if(controlls.Player.DoubleJump.WasPressedThisFrame())
-        DoubleJumpServerRpc();    
+        {
+            DoubleJumpServerRpc();
+            DoubleJump();
+        }
+
     }
-        [ServerRpc]
-    private void JumpServerRpc()
+    [ServerRpc]
+    private void JumpServerRpc() => Jump();
+    private void Jump()
     {   
         if (!canJump)
         return;
@@ -55,7 +63,8 @@ public class Jumping : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void DoubleJumpServerRpc()
+    private void DoubleJumpServerRpc() => DoubleJump();
+    private void DoubleJump()
     {
         if((movementController.isGrounded || movementController.isWallRunning) && !canDoubleJump)
         canDoubleJump = true;

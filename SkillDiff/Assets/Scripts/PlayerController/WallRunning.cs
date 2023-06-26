@@ -43,8 +43,6 @@ public class WallRunning : NetworkBehaviour
 
     private void Update() 
     {
-        if(!IsServer) return;
-
         if (!isWallRunning && canWallRun)
         WallCheck();
 
