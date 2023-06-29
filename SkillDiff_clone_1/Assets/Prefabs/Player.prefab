@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 4686062003454165608}
   - component: {fileID: 4686062003454165623}
   - component: {fileID: 4686062003454165622}
+  - component: {fileID: 4150874630917091876}
   - component: {fileID: 4686062003454165611}
   - component: {fileID: 4686062003454165621}
   - component: {fileID: 4686062003454165610}
@@ -173,9 +174,10 @@ GameObject:
   - component: {fileID: 4686062003454165613}
   - component: {fileID: 4686062003454165614}
   - component: {fileID: 4686062003454165615}
-  - component: {fileID: 4150874630917091876}
   - component: {fileID: 9122302198199153801}
   - component: {fileID: 5144626167964810187}
+  - component: {fileID: -5709616920639554498}
+  - component: {fileID: 8086904053939257899}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -191,7 +193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4686062003454165620}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -249,6 +251,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4150874630917091876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!54 &4686062003454165611
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -378,22 +396,6 @@ MonoBehaviour:
   attackDuration: 0.3
   canAttack: 1
   attacking: 0
---- !u!114 &4150874630917091876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &9122302198199153801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,5 +419,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 441997e10751d7a40a123c3a664c9bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5709616920639554498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1561134c4d89384fb34d4b8d53455df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: Red
+  id: 1
+--- !u!114 &8086904053939257899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea64f432e8690104ea36db21b8552ae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

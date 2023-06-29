@@ -63,6 +63,9 @@ public class Shooting : NetworkBehaviour
             StartCoroutine(SmokeTrail(hit.point));
             StartCoroutine(ShootingIndicator());
             }
+
+            if(IsServer)
+            SmokeTrailClientRpc(hit.point);
         }
         
     }
@@ -86,6 +89,12 @@ public class Shooting : NetworkBehaviour
         reloadStatus.fillAmount = 1f;
     }
 
+    [ClientRpc]
+    private void SmokeTrailClientRpc(Vector3 hitPosition)
+    {
+        if(!IsOwner)
+        StartCoroutine(SmokeTrail(hitPosition));
+    }
     IEnumerator SmokeTrail(Vector3 hitPosition)
     {
         

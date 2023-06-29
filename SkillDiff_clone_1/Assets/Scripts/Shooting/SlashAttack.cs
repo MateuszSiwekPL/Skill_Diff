@@ -40,7 +40,10 @@ public class SlashAttack : NetworkBehaviour
         if(!IsOwner) return;
 
         if (controlls.Player.SlashAttack.WasPressedThisFrame())
+        {
         AttackServerRpc(cam.transform.forward);
+        Attack(cam.transform.forward);
+        }
         
     }
 
@@ -53,7 +56,9 @@ public class SlashAttack : NetworkBehaviour
 
         StartCoroutine(EnableAttack());
         StartCoroutine(AddingForce(direction));
-        SlashIndicatorClientRpc();
+
+        if(IsOwner)
+        StartCoroutine(SlashIndicator());
         
     }
 
@@ -81,13 +86,6 @@ public class SlashAttack : NetworkBehaviour
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
-    }
-
-    [ClientRpc]
-    private void SlashIndicatorClientRpc()
-    {
-        if(!IsOwner) return;
-        StartCoroutine(SlashIndicator());
     }
     IEnumerator SlashIndicator()
     {
