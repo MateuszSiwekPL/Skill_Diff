@@ -15,6 +15,7 @@ public class MovementController : NetworkBehaviour
     [SerializeField] float runSpeed;
     [SerializeField] float speed;
     [SerializeField] float maxVelocity;
+    Vector2 input;
 
     [Header("GroundCheck")]
     public bool isGrounded;
@@ -47,23 +48,19 @@ public class MovementController : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if (!IsOwner) return;
-
-        if (state != State.wallRunning)
-        {
-        Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
-        RunningServerRpc(input);
-        Running(input);
-        }
-    }
-
-    private void Update() 
-    {
         StateHandler();
         GroundCheck();
         SpeedConstrain();
-    }
+        if(IsOwner)
+        {
+            input = controlls.Player.Running.ReadValue<Vector2>();
+            InputReadServerRpc(input);
+        }
+        if (state != State.wallRunning)
+        Running();
 
+        
+    }
     private void StateHandler()
     {
         if(dashing)
@@ -86,12 +83,12 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input) => Running(input);
-
-    private void Running(Vector2 input)
+    private void InputReadServerRpc(Vector2 input) => this.input = input;
+    private void Running()
     {
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
+        
         speed = rb.velocity.magnitude;
     }
     private void GroundCheck()
@@ -103,11 +100,8 @@ public class MovementController : NetworkBehaviour
     private void SpeedConstrain()
     {
         Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        if (playerSpeed.magnitude > maxVelocity)
-        {
-            Vector3 newSpeed = playerSpeed.normalized * maxVelocity;
-            rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
-        }
+        Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
+        rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
     }
     void OnDrawGizmos()
     {
