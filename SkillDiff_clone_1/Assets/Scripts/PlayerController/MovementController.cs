@@ -31,6 +31,7 @@ public class MovementController : NetworkBehaviour
     public bool dashing;
     public bool isWallRunning;
     [SerializeField] State state;
+    [SerializeField] int check;
 
     enum State
     {
@@ -51,6 +52,7 @@ public class MovementController : NetworkBehaviour
         StateHandler();
         GroundCheck();
         SpeedConstrain();
+
         if(IsOwner)
         {
             input = controlls.Player.Running.ReadValue<Vector2>();
@@ -88,8 +90,9 @@ public class MovementController : NetworkBehaviour
     {
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
-        
         speed = rb.velocity.magnitude;
+        if(input.magnitude > Vector2.zero.magnitude)
+        check += 1;
     }
     private void GroundCheck()
     {
@@ -102,6 +105,7 @@ public class MovementController : NetworkBehaviour
         Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
         rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
+        
     }
     void OnDrawGizmos()
     {

@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class ServerReconcolliation : MonoBehaviour
+public class ServerReconcolliation : NetworkBehaviour
 {
     [Header("Tick Logic")]
-    float timeBetweetTicks;
-    const int tickRate = 30;
-    float tickDeltaTime;
+    float timeBetweetTicks = 1f;
+    const float tickRate = 30f;
+    [SerializeField] float tickDeltaTime;
+    [SerializeField] int tickCount;
+    int buffer = 1024;
 
     [Header("Position Reconcoliation")]
-    Vector3 position;
-    Vector3 velocity;
+    [SerializeField] Vector3[] positions = new Vector3[1024];
+    Vector3 positionDifference;
+
+    
+
 }
