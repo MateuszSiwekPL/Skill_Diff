@@ -7,14 +7,29 @@ public class ServerReconcolliation : NetworkBehaviour
 {
     [Header("Tick Logic")]
     float timeBetweetTicks = 1f;
-    const float tickRate = 30f;
-    [SerializeField] float tickDeltaTime;
-    [SerializeField] int tickCount;
+    float tickRate = 30f;
+   
+    [SerializeField] Vector3[] positions = new Vector3[1024];
     int buffer = 1024;
+    int tickCount;
+    float timePassed;
+    
 
     [Header("Position Reconcoliation")]
-    [SerializeField] Vector3[] positions = new Vector3[1024];
     Vector3 positionDifference;
+
+
+    
+   
+    
+
+    
+    
+
+  
+   
+    
+
 
     
 

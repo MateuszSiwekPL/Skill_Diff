@@ -15,7 +15,6 @@ public class MovementController : NetworkBehaviour
     [SerializeField] float runSpeed;
     [SerializeField] float speed;
     [SerializeField] float maxVelocity;
-    Vector2 input;
 
     [Header("GroundCheck")]
     public bool isGrounded;
@@ -31,7 +30,6 @@ public class MovementController : NetworkBehaviour
     public bool dashing;
     public bool isWallRunning;
     [SerializeField] State state;
-    [SerializeField] int check;
 
     enum State
     {
@@ -39,8 +37,12 @@ public class MovementController : NetworkBehaviour
         dashing,
         wallRunning
     }
-    
-   
+    [Header("Server Reconciliation")]
+    [SerializeField] int tick = 0;
+    [SerializeField] Vector3[] positions = new Vector3[1024];
+    int buffer = 1024;
+
+
 
     private void Awake() 
     {
@@ -55,11 +57,13 @@ public class MovementController : NetworkBehaviour
 
         if(IsOwner)
         {
-            input = controlls.Player.Running.ReadValue<Vector2>();
-            InputReadServerRpc(input);
+            Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
+
+            if (state != State.wallRunning)
+            Running(input);
         }
-        if (state != State.wallRunning)
-        Running();
+
+        
 
         
     }
@@ -85,15 +89,41 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void InputReadServerRpc(Vector2 input) => this.input = input;
-    private void Running()
+    private void RunningServerRpc(Vector2 input) => Running(input); 
+    private void Running(Vector2 input)
     {
+        if(IsOwner)
+        RunningServerRpc(input);
+
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
-        if(input.magnitude > Vector2.zero.magnitude)
-        check += 1;
+
+        Physics.Simulate(Time.fixedDeltaTime);
+
+        if(IsOwner)
+        positions[tick % buffer] = transform.position;
+        
+        if(IsServer)
+        {
+            PositionCorrectionClientRpc(transform.position, tick % buffer);
+            positions[tick % buffer] = transform.position;
+        }
+
+        tick ++;
     }
+
+    [ClientRpc]
+    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick)
+    {
+        if(!IsOwner) return;
+
+        Vector3 correction = serverPosition - positions[serverTick];
+        if (correction.magnitude > 0.0000001)
+        transform.position += correction;
+        Debug.Log(correction.ToString());
+    }
+
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
@@ -105,7 +135,6 @@ public class MovementController : NetworkBehaviour
         Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
         rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
-        
     }
     void OnDrawGizmos()
     {
