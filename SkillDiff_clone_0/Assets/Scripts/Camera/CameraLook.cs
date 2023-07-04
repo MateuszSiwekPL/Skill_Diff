@@ -8,6 +8,7 @@ public class CameraLook : MonoBehaviour
    
      PlayerInputs controlls;
      public Transform player;
+     PlayerRotation playerRotation;
 
 
     float sensitivity = 25f;
@@ -21,13 +22,15 @@ public class CameraLook : MonoBehaviour
           controlls = new PlayerInputs();
           //Cursor.lockState = CursorLockMode.Locked;
           //Cursor.visible = false;
-          
    } 
 
-   private void Update() 
-   { 
-          Looking();
+   private void Start() 
+   {
+     playerRotation = player.gameObject.GetComponent<PlayerRotation>();
    }
+
+   private void Update() => Looking();
+
      private void Looking()
      {
           Vector2 look = controlls.Player.Look.ReadValue<Vector2>();
@@ -41,7 +44,7 @@ public class CameraLook : MonoBehaviour
 
           transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
           player.rotation = Quaternion.Euler(0, rotationY, 0);
-          player.gameObject.GetComponent<PlayerRotation>().RotationServerRpc(rotationY);
+          playerRotation.RotationServerRpc(rotationY);
      }
 
      private void OnEnable() => controlls.Enable();

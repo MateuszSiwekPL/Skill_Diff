@@ -62,10 +62,6 @@ public class MovementController : NetworkBehaviour
             if (state != State.wallRunning)
             Running(input);
         }
-
-        
-
-        
     }
     private void StateHandler()
     {
@@ -89,11 +85,15 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input) => Running(input); 
+    private void RunningServerRpc(Vector2 input, int clientTick)
+    {
+        tick = clientTick;
+        Running(input); 
+    }
     private void Running(Vector2 input)
     {
         if(IsOwner)
-        RunningServerRpc(input);
+        RunningServerRpc(input, tick);
 
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
@@ -102,26 +102,38 @@ public class MovementController : NetworkBehaviour
         Physics.Simulate(Time.fixedDeltaTime);
 
         if(IsOwner)
-        positions[tick % buffer] = transform.position;
+        {
+            positions[tick % buffer] = transform.position;
+            tick ++;
+        }
         
         if(IsServer)
         {
-            PositionCorrectionClientRpc(transform.position, tick % buffer);
+            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity, transform.rotation.y);
             positions[tick % buffer] = transform.position;
-        }
 
-        tick ++;
+        }
+        Debug.Log(tick.ToString());
     }
+           
+     
 
     [ClientRpc]
-    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick)
+    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float rotation)
     {
         if(!IsOwner) return;
 
-        Vector3 correction = serverPosition - positions[serverTick];
-        if (correction.magnitude > 0.0000001)
-        transform.position += correction;
-        Debug.Log(correction.ToString());
+        Vector3 correction = serverPosition - positions[serverTick % buffer];
+        if (correction.magnitude > 0.001)
+        {
+            //transform.position += correction;
+            transform.position = serverPosition;
+            tick = serverTick;
+            rb.velocity = velocity;
+            rb.angularVelocity = aVelocity;
+            transform.rotation = Quaternion.Euler(0, rotation, 0);
+            Debug.Log(correction.ToString());
+        }
     }
 
     private void GroundCheck()
