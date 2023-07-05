@@ -41,6 +41,7 @@ public class MovementController : NetworkBehaviour
     [SerializeField] int tick = 0;
     [SerializeField] Vector3[] positions = new Vector3[1024];
     int buffer = 1024;
+    public float rotation;
 
 
 
@@ -85,16 +86,19 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input, int clientTick, float rotation)
+    private void RunningServerRpc(Vector2 input, int clientTick, float clientRotation)
     {
-        transform.rotation = Quaternion.Euler(0, rotation, 0);
+        transform.rotation = Quaternion.Euler(0, clientRotation, 0);
         tick = clientTick;
         Running(input); 
     }
     private void Running(Vector2 input)
     {
         if(IsOwner)
-        RunningServerRpc(input, tick, transform.rotation.eulerAngles.y);
+        {
+            RunningServerRpc(input, tick, rotation);
+            transform.rotation = Quaternion.Euler(0, rotation, 0);
+        }
 
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
@@ -110,7 +114,7 @@ public class MovementController : NetworkBehaviour
         
         if(IsServer)
         {
-            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity);
+            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity, NetworkManager.ServerTime.TimeAsFloat);
             positions[tick % buffer] = transform.position;
 
         }
@@ -120,20 +124,19 @@ public class MovementController : NetworkBehaviour
      
 
     [ClientRpc]
-    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity)
+    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float time)
     {
         if(!IsOwner) return;
 
         Vector3 correction = serverPosition - positions[serverTick % buffer];
-        if (correction.magnitude > 0.001)
+        if (correction.magnitude > 0.0000001)
         {
             //transform.position += correction;
             transform.position = serverPosition;
             rb.velocity = velocity;
             rb.angularVelocity = aVelocity;
             Debug.Log(correction.ToString());
-            //Physics.Simulate(Time.fixedDeltaTime);
-            tick = serverTick + 1;
+            tick = serverTick;
         }
     }
 
