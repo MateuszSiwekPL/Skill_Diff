@@ -85,15 +85,16 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input, int clientTick)
+    private void RunningServerRpc(Vector2 input, int clientTick, float rotation)
     {
+        transform.rotation = Quaternion.Euler(0, rotation, 0);
         tick = clientTick;
         Running(input); 
     }
     private void Running(Vector2 input)
     {
         if(IsOwner)
-        RunningServerRpc(input, tick);
+        RunningServerRpc(input, tick, transform.rotation.eulerAngles.y);
 
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
@@ -109,7 +110,7 @@ public class MovementController : NetworkBehaviour
         
         if(IsServer)
         {
-            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity, transform.rotation.y);
+            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity);
             positions[tick % buffer] = transform.position;
 
         }
@@ -119,7 +120,7 @@ public class MovementController : NetworkBehaviour
      
 
     [ClientRpc]
-    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float rotation)
+    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity)
     {
         if(!IsOwner) return;
 
@@ -128,11 +129,11 @@ public class MovementController : NetworkBehaviour
         {
             //transform.position += correction;
             transform.position = serverPosition;
-            tick = serverTick;
             rb.velocity = velocity;
             rb.angularVelocity = aVelocity;
-            transform.rotation = Quaternion.Euler(0, rotation, 0);
             Debug.Log(correction.ToString());
+            //Physics.Simulate(Time.fixedDeltaTime);
+            tick = serverTick + 1;
         }
     }
 

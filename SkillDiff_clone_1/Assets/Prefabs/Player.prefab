@@ -178,7 +178,6 @@ GameObject:
   - component: {fileID: 5144626167964810187}
   - component: {fileID: -5709616920639554498}
   - component: {fileID: 8086904053939257899}
-  - component: {fileID: -4522422089580555339}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -324,144 +323,7 @@ MonoBehaviour:
   dashing: 0
   isWallRunning: 0
   state: 0
-  check: 0
---- !u!114 &4686062003454165612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07bfb9c3563c10441ace58480a733311, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashForce: 100
-  dashCooldown: 1
-  canDash: 1
-  dashDuration: 0.3
---- !u!114 &4686062003454165613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e98381f054048a4f9c21478b795281e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canJump: 1
-  canDoubleJump: 0
-  jumpCooldown: 0.2
-  jumpForce: 2.8
-  jumped: 0
---- !u!114 &4686062003454165614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce53e22b0870ea64dae130ac0913c1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rayLength: 0.6
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 64
-  isWallRunning: 0
-  canWallRun: 1
-  wallDirection: {x: 0, y: 0, z: 0}
-  wallRunDirection: {x: 0, y: 0, z: 0}
-  wallRunCooldwn: 0.5
-  wallSide: 0
-  wallRunSpeed: 32
---- !u!114 &4686062003454165615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95fa5d06c44aa4843a1af01c41bd6793, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackCooldown: 2
-  dashForce: 100
-  attackDuration: 0.3
-  canAttack: 1
-  attacking: 0
---- !u!114 &9122302198199153801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 132f2eb6c02e8364cad07d317eaae1b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 604073618531361549, guid: a297d5ae9f01acc4fa1fd97221a6e2a2, type: 3}
---- !u!114 &5144626167964810187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 441997e10751d7a40a123c3a664c9bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5709616920639554498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1561134c4d89384fb34d4b8d53455df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: Red
-  id: 1
---- !u!114 &8086904053939257899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea64f432e8690104ea36db21b8552ae1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-4522422089580555339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4686062003454165620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc93804165a03e548b1379c4110a5e55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tickCount: 0
+  tick: 0
   positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -1487,3 +1349,127 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+--- !u!114 &4686062003454165612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bfb9c3563c10441ace58480a733311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashForce: 100
+  dashCooldown: 1
+  canDash: 1
+  dashDuration: 0.3
+--- !u!114 &4686062003454165613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e98381f054048a4f9c21478b795281e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canJump: 1
+  canDoubleJump: 0
+  jumpCooldown: 0.2
+  jumpForce: 2.8
+  jumped: 0
+--- !u!114 &4686062003454165614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce53e22b0870ea64dae130ac0913c1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayLength: 0.6
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 64
+  isWallRunning: 0
+  canWallRun: 1
+  wallDirection: {x: 0, y: 0, z: 0}
+  wallRunDirection: {x: 0, y: 0, z: 0}
+  wallRunCooldwn: 0.5
+  wallSide: 0
+  wallRunSpeed: 32
+--- !u!114 &4686062003454165615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95fa5d06c44aa4843a1af01c41bd6793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCooldown: 2
+  dashForce: 100
+  attackDuration: 0.3
+  canAttack: 1
+  attacking: 0
+--- !u!114 &9122302198199153801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 132f2eb6c02e8364cad07d317eaae1b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 604073618531361549, guid: a297d5ae9f01acc4fa1fd97221a6e2a2, type: 3}
+--- !u!114 &5144626167964810187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441997e10751d7a40a123c3a664c9bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5709616920639554498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1561134c4d89384fb34d4b8d53455df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: Red
+  id: 1
+--- !u!114 &8086904053939257899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686062003454165620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea64f432e8690104ea36db21b8552ae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
