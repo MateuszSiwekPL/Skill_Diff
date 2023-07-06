@@ -41,7 +41,6 @@ public class MovementController : NetworkBehaviour
     [SerializeField] int tick = 0;
     [SerializeField] Vector3[] positions = new Vector3[1024];
     int buffer = 1024;
-    public float rotation;
 
 
 
@@ -86,24 +85,20 @@ public class MovementController : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RunningServerRpc(Vector2 input, int clientTick, float clientRotation)
+    private void RunningServerRpc(Vector2 input, int clientTick)
     {
-        transform.rotation = Quaternion.Euler(0, clientRotation, 0);
         tick = clientTick;
         Running(input); 
-    }
+    } 
     private void Running(Vector2 input)
     {
         if(IsOwner)
-        {
-            RunningServerRpc(input, tick, rotation);
-            transform.rotation = Quaternion.Euler(0, rotation, 0);
-        }
+        RunningServerRpc(input, tick);
 
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
-
+        
         Physics.Simulate(Time.fixedDeltaTime);
 
         if(IsOwner)
@@ -124,7 +119,7 @@ public class MovementController : NetworkBehaviour
      
 
     [ClientRpc]
-    private void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float time)
+    public void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float time)
     {
         if(!IsOwner) return;
 

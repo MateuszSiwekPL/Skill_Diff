@@ -46,21 +46,18 @@ public class Dashing : NetworkBehaviour
         if (controlls.Player.RightDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(transform.right);
-            if(canDash)
             StartCoroutine(AddingForce(transform.right));
         }
 
         if (controlls.Player.LeftDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(-transform.right);
-            if(canDash)
             StartCoroutine(AddingForce(-transform.right));
         }
 
         if (controlls.Player.DownDashing.WasPressedThisFrame())
         {
             AddingForceServerRpc(-transform.up);
-            if(canDash)
             StartCoroutine(AddingForce(-transform.up));
         }
 

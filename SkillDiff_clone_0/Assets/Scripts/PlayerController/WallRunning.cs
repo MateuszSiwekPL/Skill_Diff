@@ -41,7 +41,7 @@ public class WallRunning : NetworkBehaviour
         controlls = new PlayerInputs();
     }
 
-    private void Update() 
+    private void FixedUpdate() 
     {
         if (!isWallRunning && canWallRun)
         WallCheck();
@@ -79,20 +79,18 @@ public class WallRunning : NetworkBehaviour
 
         if(wallSide == WallSide.right)
         {
-             if(!Physics.Raycast(transform.position, transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
-             {
-                StopWallRun();
-                return;  
-             }
+        if(!Physics.Raycast(transform.position, transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
+            {
+            StopWallRun();
+            return;  
+            }
         }
-        else 
+        else if(!Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
         {
-            if(!Physics.Raycast(transform.position, -transform.right, out wallHit, rayLength + 0.5f, whatIsWall))
-             {
-                StopWallRun();
-                return;  
-             }
+            StopWallRun();
+            return;  
         }
+        
     }
     private void StopWallRun()
     {
@@ -110,8 +108,14 @@ public class WallRunning : NetworkBehaviour
         yield return new WaitForSeconds(wallRunCooldwn);
         canWallRun = true;
     }
+    [ServerRpc]
+    private void WallRunServerRpc() => StartCoroutine(nameof(WallRun));
+    
     IEnumerator WallRun()
     {
+        //if (IsOwner)
+        //WallRunServerRpc();
+        
         movementController.isWallRunning = true;
         rb.useGravity = false;
         isWallRunning = true;
@@ -125,6 +129,7 @@ public class WallRunning : NetworkBehaviour
             wallRunDirection = -wallRunDirection;
 
             rb.AddForce(wallRunDirection * wallRunSpeed * 10f, ForceMode.Force);
+            Physics.Simulate(Time.fixedDeltaTime);
 
             yield return new WaitForFixedUpdate();
         }

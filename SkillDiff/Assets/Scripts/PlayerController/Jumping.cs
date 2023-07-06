@@ -31,14 +31,14 @@ public class Jumping : NetworkBehaviour
         
         if (controlls.Player.Jumping.ReadValue<float>() > 0)
         {
-            JumpServerRpc();
             Jump();
+            JumpServerRpc();
         }
 
         if(controlls.Player.DoubleJump.WasPressedThisFrame())
         {
-            DoubleJumpServerRpc();
             DoubleJump();
+            DoubleJumpServerRpc();
         }
 
     }
