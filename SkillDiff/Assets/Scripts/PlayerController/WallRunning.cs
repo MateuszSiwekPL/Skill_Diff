@@ -41,12 +41,12 @@ public class WallRunning : NetworkBehaviour
         controlls = new PlayerInputs();
     }
 
-    private void FixedUpdate() 
+    private void Update() 
     {
         if (!isWallRunning && canWallRun)
         WallCheck();
 
-        else if(isWallRunning)
+        if(isWallRunning)
         StopCheck();
     }
 
@@ -71,10 +71,14 @@ public class WallRunning : NetworkBehaviour
     }
     private void StopCheck()
     {
-        if (controlls.Player.DoubleJump.WasPressedThisFrame())
+        if(IsOwner)
         {
-            StopWallRun();
-            return;
+            if (controlls.Player.DoubleJump.WasPressedThisFrame())
+            {
+                StopWallRun();
+                StopWallRunServerRpc();
+                return;
+            }
         }
 
         if(wallSide == WallSide.right)
@@ -92,6 +96,9 @@ public class WallRunning : NetworkBehaviour
         }
         
     }
+
+    [ServerRpc]
+    private void StopWallRunServerRpc() => StopWallRun();
     private void StopWallRun()
     {
         StopCoroutine(nameof(WallRun));

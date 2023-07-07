@@ -1349,7 +1349,6 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  rotation: 0
 --- !u!114 &4686062003454165612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,7 +1402,7 @@ MonoBehaviour:
   canWallRun: 1
   wallDirection: {x: 0, y: 0, z: 0}
   wallRunDirection: {x: 0, y: 0, z: 0}
-  wallRunCooldwn: 0.5
+  wallRunCooldwn: 1
   wallSide: 0
   wallRunSpeed: 32
 --- !u!114 &4686062003454165615
