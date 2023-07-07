@@ -27,6 +27,9 @@ public class Jumping : NetworkBehaviour
     }
     private void Update() 
     {
+        if((movementController.isGrounded || movementController.isWallRunning) && !canDoubleJump)
+        canDoubleJump = true;
+        
         if(!IsOwner) return;
         
         if (controlls.Player.Jumping.ReadValue<float>() > 0)
@@ -67,9 +70,6 @@ public class Jumping : NetworkBehaviour
     private void DoubleJumpServerRpc() => DoubleJump();
     private void DoubleJump()
     {
-        if((movementController.isGrounded || movementController.isWallRunning) && !canDoubleJump)
-        canDoubleJump = true;
-
         if(!canDoubleJump || movementController.isGrounded)
         return;
 
