@@ -11,9 +11,6 @@ public class TeamDeathMatch : NetworkBehaviour, IKillable
     private Vector3 spawnPosition;
     private void Start() 
     {
-        if(!IsOwner && !IsServer)
-        gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
-
         spawnPosition = GameObject.Find(team + "_" + id.ToString()).transform.position;
         StartCoroutine(Wait());
     }

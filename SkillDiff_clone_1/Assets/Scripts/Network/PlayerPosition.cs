@@ -8,12 +8,12 @@ public class PlayerPosition : NetworkBehaviour
 
     Vector3 position;
     float rotation;
-    private void Update() 
+    private void FixedUpdate() 
     {
         if(!IsServer) return;
         
         position = transform.position;
-        rotation = transform.rotation.y;
+        rotation = transform.rotation.eulerAngles.y;
         PositioningClientRpc(position, rotation);
     }
 
@@ -22,7 +22,8 @@ public class PlayerPosition : NetworkBehaviour
     {
         if(IsOwner) return;
         
-        transform.position = this.position;
-        transform.rotation = Quaternion.Euler(0, this.rotation, 0);
+        transform.position = position;
+        transform.rotation = Quaternion.Euler(0, rotation, 0);
+      
     }
 }

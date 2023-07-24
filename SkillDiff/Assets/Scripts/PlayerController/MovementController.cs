@@ -46,11 +46,15 @@ public class MovementController : NetworkBehaviour
 
     private void Awake() 
     {
+        //if (IsOwner)
         controlls = new PlayerInputs();
+
         rb = gameObject.GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
+        if(!(IsOwner || IsServer)) return;
+
         StateHandler();
         GroundCheck();
         SpeedConstrain();
