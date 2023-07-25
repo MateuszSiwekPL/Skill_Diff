@@ -11,18 +11,24 @@ public class TeamDeathMatch : NetworkBehaviour, IKillable
     private Vector3 spawnPosition;
     private void Start() 
     {
+        if (!IsServer) return;
+
         spawnPosition = GameObject.Find(team + "_" + id.ToString()).transform.position;
         StartCoroutine(Wait());
     }
     IEnumerator Wait()
     {
         yield return new WaitForFixedUpdate();
-        SpawningServerRpc();
+        SpawningClientRpc(spawnPosition);
         Spawning();
     }
 
-    [ServerRpc]
-    public void SpawningServerRpc() => Spawning();
+    [ClientRpc]
+    public void SpawningClientRpc(Vector3 spawnPosition)
+    {
+        this.spawnPosition = spawnPosition;
+        Spawning();
+    }
     public void Spawning()
     {
         transform.position = spawnPosition;
@@ -32,7 +38,10 @@ public class TeamDeathMatch : NetworkBehaviour, IKillable
 
     public void Kill()
     {
-        SpawningServerRpc();
-        Spawning();
+        if(IsServer)
+        {
+            SpawningClientRpc(spawnPosition);
+            Spawning();
+        }
     }
 }

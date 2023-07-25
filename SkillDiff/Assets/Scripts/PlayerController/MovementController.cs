@@ -46,9 +46,7 @@ public class MovementController : NetworkBehaviour
 
     private void Awake() 
     {
-        //if (IsOwner)
         controlls = new PlayerInputs();
-
         rb = gameObject.GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
@@ -104,6 +102,7 @@ public class MovementController : NetworkBehaviour
         speed = rb.velocity.magnitude;
         
         Physics.Simulate(Time.fixedDeltaTime);
+        
 
         if(IsOwner)
         {
@@ -113,9 +112,8 @@ public class MovementController : NetworkBehaviour
         
         if(IsServer)
         {
-            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity, NetworkManager.ServerTime.TimeAsFloat);
+            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity);
             positions[tick % buffer] = transform.position;
-
         }
         Debug.Log(tick.ToString());
     }
@@ -123,14 +121,13 @@ public class MovementController : NetworkBehaviour
      
 
     [ClientRpc]
-    public void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity, float time)
+    public void PositionCorrectionClientRpc(Vector3 serverPosition, int serverTick, Vector3 velocity, Vector3 aVelocity)
     {
         if(!IsOwner) return;
-
+        
         Vector3 correction = serverPosition - positions[serverTick % buffer];
-        if (correction.magnitude > 0.0000001)
+        if (correction.magnitude > 0.00000001)
         {
-            //transform.position += correction;
             transform.position = serverPosition;
             rb.velocity = velocity;
             rb.angularVelocity = aVelocity;
