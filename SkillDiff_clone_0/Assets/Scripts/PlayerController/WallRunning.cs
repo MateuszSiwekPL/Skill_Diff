@@ -136,7 +136,7 @@ public class WallRunning : NetworkBehaviour
             wallRunDirection = -wallRunDirection;
 
             rb.AddForce(wallRunDirection * wallRunSpeed * 10f, ForceMode.Force);
-            Physics.Simulate(Time.fixedDeltaTime);
+            //Physics.Simulate(Time.fixedDeltaTime);
 
             yield return new WaitForFixedUpdate();
         }
