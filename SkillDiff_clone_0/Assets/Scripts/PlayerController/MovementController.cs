@@ -100,9 +100,8 @@ public class MovementController : NetworkBehaviour
         Vector3 runDirection = transform.forward * input.y + transform.right * input.x;
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
-        
+
         Physics.Simulate(Time.fixedDeltaTime);
-        
 
         if(IsOwner)
         {

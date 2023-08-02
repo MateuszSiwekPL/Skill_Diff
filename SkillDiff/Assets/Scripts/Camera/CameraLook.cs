@@ -20,8 +20,8 @@ public class CameraLook : MonoBehaviour
    private void Awake() 
    {
           controlls = new PlayerInputs();
-          //Cursor.lockState = CursorLockMode.Locked;
-          //Cursor.visible = false;
+          Cursor.lockState = CursorLockMode.Locked;
+          Cursor.visible = false;
    } 
 
    private void Start() 
@@ -43,7 +43,10 @@ public class CameraLook : MonoBehaviour
           rotationX = Mathf.Clamp(rotationX, -90f, 90f);
 
           transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-          rotating.rotation = rotationY;
+     }
+
+     private void FixedUpdate() {
+          rotating.Rotate(rotationY);
      }
 
      private void OnEnable() => controlls.Enable();

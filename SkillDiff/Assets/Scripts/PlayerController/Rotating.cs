@@ -7,16 +7,13 @@ public class Rotating : NetworkBehaviour
 {
     public float rotation;
 
-
-    private void FixedUpdate() 
-    {
-        if(!IsOwner) return;
-
-        RotateServerRpc(rotation);
-        Rotate(rotation);
-    }
-
     [ServerRpc]
     private void RotateServerRpc(float rot) => Rotate(rot);
-    private void Rotate(float rot) => transform.rotation = Quaternion.Euler(0, rot, 0);
+    public void Rotate(float rot) 
+    {
+        if(IsOwner)
+        RotateServerRpc(rot);
+        
+        transform.rotation = Quaternion.Euler(0, rot, 0);
+    }
 }
