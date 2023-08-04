@@ -101,20 +101,20 @@ public class MovementController : NetworkBehaviour
         rb.AddForce(runDirection.normalized * runSpeed * 10f, ForceMode.Force);
         speed = rb.velocity.magnitude;
 
-        Physics.Simulate(Time.fixedDeltaTime);
+        // Physics.Simulate(Time.fixedDeltaTime);
 
-        if(IsOwner)
-        {
-            positions[tick % buffer] = transform.position;
-            tick ++;
-        }
+        // if(IsOwner)
+        // {
+        //     positions[tick % buffer] = transform.position;
+        //     tick ++;
+        // }
         
-        if(IsServer)
-        {
-            PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity);
-            positions[tick % buffer] = transform.position;
-        }
-        Debug.Log(tick.ToString());
+        // if(IsServer)
+        // {
+        //     PositionCorrectionClientRpc(transform.position, tick, rb.velocity, rb.angularVelocity);
+        //     positions[tick % buffer] = transform.position;
+        // }
+        // Debug.Log(tick.ToString());
     }
            
      
@@ -143,9 +143,9 @@ public class MovementController : NetworkBehaviour
     }
     private void SpeedConstrain()
     {
-        Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
-        rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
+        // Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        // Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
+        // rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
     }
     void OnDrawGizmos()
     {
