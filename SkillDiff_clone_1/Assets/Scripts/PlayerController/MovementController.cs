@@ -51,20 +51,27 @@ public class MovementController : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if(!(IsOwner || IsServer)) return;
+        if(!IsOwner) return;
 
         StateHandler();
+        StateHandlerServerRpc();
+
         GroundCheck();
+        GroundCheckServerRpc();
+
         SpeedConstrain();
+        SpeedConstrainServerRpc();
 
-        if(IsOwner)
-        {
-            Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
+        
+        Vector2 input = controlls.Player.Running.ReadValue<Vector2>();
 
-            if (state != State.wallRunning)
-            Running(input);
-        }
+        if (state != State.wallRunning)
+        Running(input);
+        
     }
+    [ServerRpc]
+    private void StateHandlerServerRpc() => StateHandler();
+
     private void StateHandler()
     {
         if(dashing)
@@ -135,17 +142,23 @@ public class MovementController : NetworkBehaviour
         }
     }
 
+    [ServerRpc]
+    private void GroundCheckServerRpc() => GroundCheck();
+
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.position - groundCheckPosition, groundCheckRadious, whatIsGround);
 
         rb.drag = isGrounded == true? groundedDrag : airDrag;
     }
+    [ServerRpc]
+    private void SpeedConstrainServerRpc() => SpeedConstrain();
+
     private void SpeedConstrain()
     {
-        // Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        // Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
-        // rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
+        Vector3 playerSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 newSpeed = Vector3.ClampMagnitude(playerSpeed, maxVelocity);
+        rb.velocity = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
     }
     void OnDrawGizmos()
     {
