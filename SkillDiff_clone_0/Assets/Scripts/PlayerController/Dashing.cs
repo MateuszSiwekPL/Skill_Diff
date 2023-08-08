@@ -16,20 +16,16 @@ public class Dashing : NetworkBehaviour
     [SerializeField] bool canDash;
     [SerializeField] float dashDuration;
 
-    [Header("Slash Attack")]
-    bool attacking;
-    Camera cam;
-
     [Header("Cooldown")] 
     Image cooldownBar;
     float timePassed;
+    [SerializeField] int a;
 
     private void Awake() 
     {
         rb = gameObject.GetComponent<Rigidbody>();
         controlls = new PlayerInputs();
         movementController = gameObject.GetComponent<MovementController>();
-        cam = Camera.main;
         cooldownBar = GameObject.Find("Dash_Indicator").GetComponent<Image>();
     }
 
@@ -40,8 +36,8 @@ public class Dashing : NetworkBehaviour
     }
     private void Dash()
     {
-        if(!canDash)
-        return;
+        if(!IsOwner) return;
+        if(!canDash) return;
 
         if (controlls.Player.RightDashing.WasPressedThisFrame())
         {
@@ -68,6 +64,7 @@ public class Dashing : NetworkBehaviour
     {
         if(!canDash) return;
         StartCoroutine(AddingForce(direction));
+        
     }
     
     IEnumerator AddingForce(Vector3 direction)
@@ -75,16 +72,17 @@ public class Dashing : NetworkBehaviour
         
         movementController.dashing = true;
         canDash = false;
-        StartCoroutine(DashDuration());
         StartCoroutine(DashCooldown());
+        StartCoroutine(DashDuration());
 
         if(IsOwner)
         StartCoroutine(DashIndicator());
-
+        
         while(movementController.dashing)
         {
-            yield return new WaitForFixedUpdate();
             rb.AddForce(direction * dashForce * 10f, ForceMode.Force);
+            a++;
+            yield return new WaitForFixedUpdate();
         } 
     }
     IEnumerator DashCooldown()
@@ -104,9 +102,11 @@ public class Dashing : NetworkBehaviour
         } 
         cooldownBar.fillAmount = 1f;
     }
+
     IEnumerator DashDuration()
     {
         yield return new WaitForSeconds(dashDuration);
+        //DashDurationServerRpc();
         movementController.dashing = false;
     }
 

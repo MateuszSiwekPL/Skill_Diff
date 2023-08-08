@@ -9,10 +9,13 @@ public class TeamDeathMatch : NetworkBehaviour, IKillable
     public string team;
     public int id;
     private Vector3 spawnPosition;
+    Scoring scoring;
+    
     private void Start() 
     {
         if (!IsServer) return;
 
+        scoring = GameObject.Find("Score_Board").GetComponent<Scoring>();
         spawnPosition = GameObject.Find(team + "_" + id.ToString()).transform.position;
         StartCoroutine(Wait());
     }
@@ -40,6 +43,13 @@ public class TeamDeathMatch : NetworkBehaviour, IKillable
     {
         if(IsServer)
         {
+            if(team == "Red")
+            scoring.blueScore.Value++;
+            else
+            scoring.redScore.Value++;
+                
+                
+
             SpawningClientRpc(spawnPosition);
             Spawning();
         }
