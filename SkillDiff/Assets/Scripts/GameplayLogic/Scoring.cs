@@ -15,7 +15,8 @@ public class Scoring : NetworkBehaviour
     public NetworkVariable<int> redScore = new NetworkVariable<int>(0);
     public NetworkVariable<int> blueScore = new NetworkVariable<int>(0);
 
-    private void Awake() {
+    private void Awake() 
+    {
         redScore.OnValueChanged += RedScoring;
         blueScore.OnValueChanged += BlueScoring;
     }

@@ -1366,6 +1366,7 @@ MonoBehaviour:
   dashCooldown: 1
   canDash: 1
   dashDuration: 0.3
+  a: 0
 --- !u!114 &4686062003454165613
 MonoBehaviour:
   m_ObjectHideFlags: 0

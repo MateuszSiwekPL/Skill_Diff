@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class PhysicsSimulate : NetworkBehaviour
+public class ServerReconsiliation : NetworkBehaviour
 {
 
     [Header("Server Reconciliation")]
@@ -12,12 +12,16 @@ public class PhysicsSimulate : NetworkBehaviour
     int buffer = 1024;
     Rigidbody rb;
 
+
     private void Awake() => rb = gameObject.GetComponent<Rigidbody>();
 
-    private void FixedUpdate()
+    
+    public void FixedUpdate()
     {
         if(IsOwner)
-        ClientPrediction();
+        {
+            ClientPrediction();
+        }
     }
 
     [ServerRpc]
@@ -31,6 +35,7 @@ public class PhysicsSimulate : NetworkBehaviour
     {
         if(IsOwner)
         ClientPredictionServerRpc(tick);
+
 
         Physics.Simulate(Time.fixedDeltaTime);
 
